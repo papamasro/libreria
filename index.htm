@@ -31,14 +31,12 @@
         .font-brand { font-family: 'Cinzel', serif; }
         .font-serif { font-family: 'Playfair Display', serif; }
 
-        /* Header con desenfoque de cristal */
         .glass-nav {
             background: rgba(10, 10, 12, 0.8);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Estilo de Tarjetas */
         .product-card {
             background: var(--bg-card);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -58,7 +56,6 @@
             overflow: hidden;
         }
 
-        /* Botón de compra moderno */
         .btn-action {
             background: linear-gradient(to right, #e11d48, #be123c);
             transition: all 0.3s ease;
@@ -72,7 +69,6 @@
         }
         .btn-action:active { transform: scale(0.98); }
 
-        /* Animación de carga */
         .loader-ring {
             width: 50px;
             height: 50px;
@@ -83,13 +79,11 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Scrollbar estética */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-deep); }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-        /* Footer Gradient */
         .footer-glow {
             position: relative;
         }
@@ -110,7 +104,6 @@
     <!-- Navegación -->
     <nav class="glass-nav sticky top-0 z-50 py-4 px-6">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <!-- Logo -->
             <div class="flex items-center space-x-4 cursor-pointer" onclick="window.location.reload()">
                 <div class="relative flex items-center justify-center w-10 h-10 bg-rose-600/10 rounded-full border border-rose-600/20">
                     <i class="fas fa-moon text-rose-500 text-xl rotate-[-15deg]"></i>
@@ -121,7 +114,6 @@
                 </div>
             </div>
 
-            <!-- Buscador Moderno -->
             <div class="w-full md:max-w-md">
                 <div class="relative group">
                     <input type="text" id="search-input" 
@@ -131,7 +123,6 @@
                 </div>
             </div>
 
-            <!-- Carrito -->
             <button onclick="toggleCart()" class="relative p-2 text-slate-300 hover:text-white transition-colors group">
                 <i class="fas fa-shopping-bag text-2xl"></i>
                 <span id="cart-count" class="absolute -top-1 -right-1 bg-rose-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-slate-950">0</span>
@@ -141,7 +132,6 @@
 
     <!-- Contenido -->
     <main class="max-w-7xl mx-auto px-6 py-12 flex-grow w-full">
-        <!-- Título de Sección -->
         <div class="mb-12">
             <h2 class="text-3xl font-brand text-white mb-2">Colección Curada</h2>
             <div class="w-12 h-1 bg-rose-600"></div>
@@ -153,7 +143,6 @@
         </div>
 
         <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Dinámico -->
         </div>
     </main>
 
@@ -174,25 +163,33 @@
             <div class="space-y-4">
                 <h4 class="text-xs uppercase tracking-widest text-slate-500 font-bold">Contacto</h4>
                 <ul class="space-y-3">
-                    <li><a href="mailto:librerialunaroja@gmail.com" class="text-slate-300 hover:text-rose-500 text-sm transition-colors flex items-center"><i class="far fa-envelope mr-3"></i> Enviar Email</a></li>
-                    <li><a href="https://wa.me/${WHATSAPP_PHONE}" class="text-slate-300 hover:text-rose-500 text-sm transition-colors flex items-center"><i class="fab fa-whatsapp mr-3"></i>Chatear por WhatsApp </a></li>
-                     <li>Chacarita, Charlone 608</li>
+                    <li>
+                        <a href="mailto:librerialunaroja@gmail.com" class="text-slate-300 hover:text-rose-500 text-sm transition-colors flex items-center group">
+                            <i class="far fa-envelope mr-3 text-rose-600/50 group-hover:text-rose-500"></i> librerialunaroja@gmail.com
+                        </a>
+                    </li>
+                    <li>
+                        <button onclick="sendDirectWhatsApp()" class="text-slate-300 hover:text-rose-500 text-sm transition-colors flex items-center group">
+                            <i class="fab fa-whatsapp mr-3 text-rose-600/50 group-hover:text-rose-500"></i> WhatsApp Directo
+                        </button>
+                    </li>
+                    <li class="text-slate-300 text-sm flex items-center">
+                        <i class="fas fa-map-marker-alt mr-3 text-rose-600/50"></i> Chacarita, Charlone 608
+                    </li>
                 </ul>
             </div>
+
             <div class="space-y-4">
                 <h4 class="text-xs uppercase tracking-widest text-slate-500 font-bold">Seguinos</h4>
                 <div class="flex space-x-4">
-                    <a href="https://www.instagram.com/sublime.luna.roja/" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:border-rose-500 hover:text-rose-500 transition-all social-link">
+                    <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:border-rose-500 hover:text-rose-500 transition-all social-link">
                         <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:border-rose-500 hover:text-rose-500 transition-all social-link">
-                        <i class="fab fa-facebook-f"></i>
                     </a>
                 </div>
             </div>
         </div>
         
-        <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col md:row justify-between text-[10px] text-slate-600 uppercase tracking-[0.2em]">
+        <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between text-[10px] text-slate-600 uppercase tracking-[0.2em]">
             <p>© 2026 Librería Luna Roja. Todos los derechos reservados.</p>
             <p class="mt-4 md:mt-0 italic font-bold">Artesanía & Alma Digital</p>
         </div>
@@ -211,7 +208,6 @@
         </div>
 
         <div id="cart-content" class="flex-grow overflow-y-auto p-8 space-y-6">
-            <!-- Items -->
         </div>
 
         <div class="p-8 bg-black/40 border-t border-white/5">
@@ -227,7 +223,8 @@
     </aside>
 
     <script>
-        const WHATSAPP_PHONE = "54911444606930"; 
+        // Formato internacional sin +, espacios ni guiones para la API
+        const WHATSAPP_PHONE = "5491144606930"; 
         const SHEET_ID = "11s7m68TJhweA-lNP0QSVSfXDV8wRBNHbRT0ubremuuM";
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
 
@@ -301,7 +298,6 @@
                                     <span class="text-xs text-slate-500 uppercase tracking-widest font-bold">Precio</span>
                                     <span class="text-xl font-bold text-white">$ ${p.precio.toLocaleString('es-AR')}</span>
                                 </div>
-                                
                                 <button onclick="addToCart(${p.id}, this)" ${isOutOfStock ? 'disabled' : ''} 
                                         class="btn-action w-full py-3 rounded-xl text-white font-bold text-xs uppercase tracking-widest flex items-center justify-center space-x-2 disabled:bg-slate-800/50 disabled:text-slate-600 disabled:shadow-none">
                                     <i class="fas fa-plus-circle"></i>
@@ -346,7 +342,6 @@
             const content = document.getElementById('cart-content');
             const totalDisplay = document.getElementById('cart-total');
             const countLabel = document.getElementById('cart-count');
-            
             const totalQty = cart.reduce((acc, i) => acc + i.quantity, 0);
             countLabel.innerText = totalQty;
 
@@ -364,7 +359,7 @@
                 const sub = item.precio * item.quantity;
                 total += sub;
                 return `
-                    <div class="flex items-center space-x-4 animate-fadeIn">
+                    <div class="flex items-center space-x-4">
                         <img src="${item.imagen}" class="w-16 h-16 object-cover rounded-xl border border-white/5">
                         <div class="flex-grow">
                             <h4 class="text-sm font-semibold text-white line-clamp-1">${item.nombre}</h4>
@@ -398,11 +393,15 @@
             }
         }
 
+        function sendDirectWhatsApp() {
+            window.open(`https://wa.me/${WHATSAPP_PHONE}`, '_blank');
+        }
+
         function sendToWhatsApp() {
             if (cart.length === 0) return;
             let total = 0;
             let msg = "✨ *LUNA ROJA - NUEVO PEDIDO* ✨%0A%0A";
-            cart.forEach((i, idx) => {
+            cart.forEach((i) => {
                 const sub = i.precio * i.quantity;
                 msg += `🔸 *${i.nombre}* (x${i.quantity})%0A   Subtotal: $${sub.toLocaleString('es-AR')}%0A%0A`;
                 total += sub;
@@ -419,5 +418,3 @@
     </script>
 </body>
 </html>
-
-
