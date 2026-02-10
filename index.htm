@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Librería Luna Roja | Diseño & Arte</title>
+    
+    <!-- Favicon: Luna Roja -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e11d48'%3E%3Cpath d='M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-5.4-5.4 5.389 5.389 0 0 1 2.26-4.4C12.92 3.04 12.46 3 12 3z'/%3E%3C/svg%3E">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
         
@@ -32,46 +37,106 @@
         .font-serif { font-family: 'Playfair Display', serif; }
 
         .glass-nav {
-            background: rgba(10, 10, 12, 0.8);
+            background: rgba(10, 10, 12, 0.85);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
+        /* --- LÓGICA DE TARJETAS EXPANDIBLES --- */
+        .card-wrapper {
+            position: relative;
+            height: 28rem;
+            z-index: 10;
+        }
+        
         .product-card {
             background: var(--bg-card);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
+            width: 100%;
+            height: 100%; 
+            position: absolute;
+            top: 0; 
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             overflow: hidden;
+            border-radius: 1rem; /* Esquinas redondeadas base */
+            transform-origin: center top;
         }
-        .product-card:hover {
-            transform: translateY(-10px);
+
+        .card-wrapper:hover {
+            z-index: 50;
+        }
+
+        .card-wrapper:hover .product-card {
+            height: auto;
+            min-height: 100%;
+            overflow: visible; 
+            transform: scale(1.1); 
+            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.95), 0 0 25px rgba(225, 29, 72, 0.15);
             border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(225, 29, 72, 0.1);
+            background: #1a1a1f;
         }
 
+        /* Corrección de esquinas en hover */
+        .card-wrapper:hover .img-container {
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+        }
+        
+        /* Contenedor inferior en hover para mantener redondeado el botón/fondo */
+        .card-wrapper:hover .info-content {
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+        }
+
+        .desc-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+            transition: color 0.3s ease;
+        }
+
+        .card-wrapper:hover .desc-text {
+            -webkit-line-clamp: unset;
+            color: #e2e8f0;
+            margin-bottom: 1rem;
+        }
+        
         .img-container {
-            position: relative;
-            background: radial-gradient(circle at center, #232329 0%, #16161a 100%);
+            transition: height 0.3s ease;
+            border-top-left-radius: 0.9rem;
+            border-top-right-radius: 0.9rem;
             overflow: hidden;
         }
+        
+        .img-container img {
+            transition: transform 0.6s ease;
+        }
+        
+        .card-wrapper:hover img {
+            transform: scale(1.1);
+        }
 
+        /* --- UI ELEMENTS --- */
         .btn-action {
             background: linear-gradient(to right, #e11d48, #be123c);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
         }
         .btn-action:hover:not(:disabled) {
             filter: brightness(1.2);
-            transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(225, 29, 72, 0.4);
+            box-shadow: 0 0 20px rgba(225, 29, 72, 0.4);
         }
         .btn-action:active { transform: scale(0.98); }
 
         .loader-ring {
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             border: 2px solid rgba(225, 29, 72, 0.1);
             border-radius: 50%;
             border-top-color: var(--accent);
@@ -84,16 +149,10 @@
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-        .footer-glow {
-            position: relative;
-        }
+        .footer-glow { position: relative; }
         .footer-glow::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            height: 1px;
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 80%; height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
             opacity: 0.3;
         }
@@ -102,7 +161,7 @@
 <body class="antialiased">
 
     <!-- Navegación -->
-    <nav class="glass-nav sticky top-0 z-50 py-4 px-6">
+    <nav class="glass-nav sticky top-0 z-[100] py-4 px-6">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="flex items-center space-x-4 cursor-pointer" onclick="window.location.reload()">
                 <div class="relative flex items-center justify-center w-10 h-10 bg-rose-600/10 rounded-full border border-rose-600/20">
@@ -117,8 +176,8 @@
             <div class="w-full md:max-w-md">
                 <div class="relative group">
                     <input type="text" id="search-input" 
-                           placeholder="¿Qué estás buscando hoy?" 
-                           class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-12 text-sm focus:outline-none focus:border-rose-500 focus:bg-white/10 transition-all placeholder:text-slate-600">
+                           placeholder="Buscar en el catálogo..." 
+                           class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-12 text-sm focus:outline-none focus:border-rose-500 focus:bg-white/10 transition-all placeholder:text-slate-600 text-white">
                     <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-rose-500 transition-colors"></i>
                 </div>
             </div>
@@ -139,30 +198,31 @@
 
         <div id="loading-state" class="flex flex-col items-center justify-center py-20">
             <div class="loader-ring mb-4"></div>
-            <span class="text-xs uppercase tracking-[0.4em] text-slate-500 font-bold">Cargando catálogo</span>
+            <span class="text-xs uppercase tracking-[0.4em] text-slate-500 font-bold">Invocando catálogo</span>
         </div>
 
-        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+            <!-- Items JS -->
         </div>
     </main>
 
-    <!-- Footer Premium -->
+    <!-- Footer Completo Restaurado -->
     <footer class="footer-glow mt-20 bg-[#060608] border-t border-white/5 py-16 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
             <div class="col-span-1 md:col-span-2 space-y-6">
                 <div class="flex items-center space-x-3">
                     <i class="fas fa-moon text-rose-600 text-2xl"></i>
-                    <span class="font-brand text-2xl tracking-tighter">LUNA ROJA</span>
+                    <span class="font-brand text-2xl tracking-tighter text-white">LUNA ROJA</span>
                 </div>
                 <p class="text-slate-400 text-sm max-w-sm leading-relaxed font-light">
                     Explora nuestra selección de arte, objetos únicos y encuadernación artesanal. 
-                    Cada pieza cuenta una historia diferente, diseñada para durar.
+                    Cada pieza cuenta una historia diferente en nuestro rincón de Chacarita.
                 </p>
             </div>
             
             <div class="space-y-4">
                 <h4 class="text-xs uppercase tracking-widest text-slate-500 font-bold">Contacto</h4>
-                <ul class="space-y-3">
+                <ul class="space-y-4">
                     <li>
                         <a href="mailto:librerialunaroja@gmail.com" class="text-slate-300 hover:text-rose-500 text-sm transition-colors flex items-center group">
                             <i class="far fa-envelope mr-3 text-rose-600/50 group-hover:text-rose-500"></i> librerialunaroja@gmail.com
@@ -170,11 +230,14 @@
                     </li>
                     <li>
                         <button onclick="sendDirectWhatsApp()" class="text-slate-300 hover:text-rose-500 text-sm transition-colors flex items-center group">
-                            <i class="fab fa-whatsapp mr-3 text-rose-600/50 group-hover:text-rose-500"></i> WhatsApp Directo
+                            <i class="fab fa-whatsapp mr-3 text-rose-600/50 group-hover:text-rose-500"></i> Nuestro WhatsApp
                         </button>
                     </li>
-                    <li class="text-slate-300 text-sm flex items-center">
-                        <i class="fas fa-map-marker-alt mr-3 text-rose-600/50"></i> Chacarita, Charlone 608
+                    <li>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" class="text-slate-300 hover:text-rose-500 text-sm transition-colors flex items-start group">
+                            <i class="fas fa-map-marker-alt mr-3 mt-1 text-rose-600/50 group-hover:text-rose-500"></i> 
+                            <span>Chacarita, Charlone 608<br><span class="text-xs text-slate-500">Ver ubicación</span></span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -182,7 +245,7 @@
             <div class="space-y-4">
                 <h4 class="text-xs uppercase tracking-widest text-slate-500 font-bold">Seguinos</h4>
                 <div class="flex space-x-4">
-                    <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:border-rose-500 hover:text-rose-500 transition-all social-link">
+                    <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:border-rose-500 hover:text-rose-500 transition-all">
                         <i class="fab fa-instagram"></i>
                     </a>
                 </div>
@@ -196,40 +259,32 @@
     </footer>
 
     <!-- Carrito Sidebar -->
-    <div id="cart-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-500" onclick="toggleCart()"></div>
+    <div id="cart-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] hidden opacity-0 transition-opacity duration-500" onclick="toggleCart()"></div>
     
-    <aside id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-md bg-[#0d0d10] z-[70] shadow-2xl flex flex-col translate-x-full transition-transform duration-500 border-l border-white/5">
+    <aside id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-md bg-[#0d0d10] z-[120] shadow-2xl flex flex-col translate-x-full transition-transform duration-500 border-l border-white/5">
         <div class="p-8 border-b border-white/5 flex justify-between items-center">
-            <div>
-                <h2 class="text-xl font-brand text-white">TU PEDIDO</h2>
-                <p class="text-[10px] text-rose-500 uppercase tracking-widest font-bold">Luna Roja Shop</p>
-            </div>
+            <h2 class="text-xl font-brand text-white">TU PEDIDO</h2>
             <button onclick="toggleCart()" class="text-slate-500 hover:text-rose-500 transition-colors text-3xl">&times;</button>
         </div>
-
-        <div id="cart-content" class="flex-grow overflow-y-auto p-8 space-y-6">
-        </div>
-
+        <div id="cart-content" class="flex-grow overflow-y-auto p-8 space-y-6"></div>
         <div class="p-8 bg-black/40 border-t border-white/5">
             <div class="flex justify-between items-end mb-8">
                 <span class="text-slate-500 text-sm uppercase tracking-widest">Subtotal</span>
                 <span id="cart-total" class="text-2xl font-bold text-rose-500">$ 0,00</span>
             </div>
-            <button onclick="sendToWhatsApp()" class="btn-action w-full text-white py-5 rounded-xl font-bold uppercase tracking-widest text-sm flex items-center justify-center space-x-3 shadow-lg">
-                <i class="fab fa-whatsapp text-xl"></i>
-                <span>Finalizar Compra</span>
+            <button onclick="sendToWhatsApp()" class="btn-action text-white py-5 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg">
+                <i class="fab fa-whatsapp text-xl mr-3"></i> Finalizar Compra
             </button>
         </div>
     </aside>
 
     <script>
-        // Formato internacional sin +, espacios ni guiones para la API
         const WHATSAPP_PHONE = "5491144460693"; 
         const SHEET_ID = "11s7m68TJhweA-lNP0QSVSfXDV8wRBNHbRT0ubremuuM";
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
 
         let products = [];
-        let cart = JSON.parse(localStorage.getItem('luna_roja_cart_v4')) || [];
+        let cart = JSON.parse(localStorage.getItem('luna_roja_cart_final')) || [];
 
         window.onload = loadStock;
 
@@ -264,7 +319,8 @@
                         descripcion: clean(parts[1]),
                         stock: parseInt(clean(parts[2])) || 0,
                         precio: parsePrice(clean(parts[3])),
-                        imagen: clean(parts[4])
+                        imagen: clean(parts[4]),
+                        infoCorta: clean(parts[5])
                     };
                 }).filter(p => p.nombre !== "");
 
@@ -273,7 +329,7 @@
                 updateUI();
             } catch (err) {
                 console.error(err);
-                document.getElementById('loading-state').innerHTML = `<p class='text-rose-500 text-xs uppercase'>Error de carga</p>`;
+                document.getElementById('loading-state').innerHTML = `<p class='text-rose-500'>Error de conexión</p>`;
             }
         }
 
@@ -281,28 +337,32 @@
             const grid = document.getElementById('products-grid');
             grid.innerHTML = items.map(p => {
                 const isOutOfStock = p.stock <= 0;
+                const infoContent = p.infoCorta 
+                    ? `<p class="text-[10px] text-rose-400 font-bold uppercase tracking-widest mb-4 bg-rose-900/10 inline-block px-2 py-1 rounded border border-rose-900/20">${p.infoCorta}</p>` 
+                    : `<div class="h-6 mb-4"></div>`;
+
                 return `
-                    <div class="product-card group rounded-2xl flex flex-col">
-                        <div class="img-container h-64 flex items-center justify-center p-8">
-                            <img src="${p.imagen}" alt="${p.nombre}" 
-                                 class="object-contain h-full w-full transition-all duration-700 group-hover:scale-110 ${isOutOfStock ? 'opacity-20 blur-sm' : ''}"
-                                 onerror="this.src='https://via.placeholder.com/400/0a0a0c/e11d48?text=Luna+Roja'">
-                            ${isOutOfStock ? '<span class="absolute text-[10px] font-bold bg-white/5 border border-white/10 px-4 py-2 rounded-full tracking-[0.2em] text-white">AGOTADO</span>' : ''}
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-base font-semibold text-white mb-2 leading-tight">${p.nombre}</h3>
-                            <p class="text-xs text-slate-500 mb-6 line-clamp-2 leading-relaxed font-light">${p.descripcion}</p>
+                    <div class="card-wrapper">
+                        <div class="product-card">
+                            <div class="img-container h-48 flex items-center justify-center p-6 bg-[#0c0c0e] flex-shrink-0 relative">
+                                <img src="${p.imagen}" alt="${p.nombre}" class="object-contain h-full w-full ${isOutOfStock ? 'opacity-30' : ''}" onerror="this.src='https://via.placeholder.com/400/16161a/e11d48?text=Luna+Roja'">
+                                ${isOutOfStock ? '<span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold bg-black/60 px-4 py-2 rounded-full border border-white/10 tracking-widest text-white backdrop-blur-sm">AGOTADO</span>' : ''}
+                            </div>
                             
-                            <div class="mt-auto pt-4 flex flex-col gap-4">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs text-slate-500 uppercase tracking-widest font-bold">Precio</span>
-                                    <span class="text-xl font-bold text-white">$ ${p.precio.toLocaleString('es-AR')}</span>
+                            <div class="info-content p-5 flex flex-col flex-grow bg-[#16161a]">
+                                <h3 class="text-sm font-semibold text-white mb-2 leading-tight min-h-[2.5rem]">${p.nombre}</h3>
+                                <p class="desc-text text-xs text-slate-500 leading-relaxed mb-4 flex-grow">${p.descripcion}</p>
+                                
+                                <div class="mt-auto">
+                                    ${infoContent}
+                                    <div class="flex items-center justify-between mb-4">
+                                        <span class="text-xl font-bold text-white">$ ${p.precio.toLocaleString('es-AR')}</span>
+                                    </div>
+                                    <button onclick="addToCart(${p.id}, this)" ${isOutOfStock ? 'disabled' : ''} 
+                                            class="btn-action py-3 rounded-lg text-white font-bold text-xs uppercase tracking-widest disabled:opacity-30">
+                                        <i class="fas fa-plus-circle mr-2"></i> <span>Agregar</span>
+                                    </button>
                                 </div>
-                                <button onclick="addToCart(${p.id}, this)" ${isOutOfStock ? 'disabled' : ''} 
-                                        class="btn-action w-full py-3 rounded-xl text-white font-bold text-xs uppercase tracking-widest flex items-center justify-center space-x-2 disabled:bg-slate-800/50 disabled:text-slate-600 disabled:shadow-none">
-                                    <i class="fas fa-plus-circle"></i>
-                                    <span>Agregar</span>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -316,16 +376,11 @@
             if (inCart) inCart.quantity++; else cart.push({ ...product, quantity: 1 });
             
             const span = btn.querySelector('span');
-            const icon = btn.querySelector('i');
-            const originalText = span.innerText;
             span.innerText = "¡Agregado!";
-            icon.className = "fas fa-check-circle";
+            btn.classList.add("bg-green-600");
             
             saveAndSync();
-            setTimeout(() => {
-                span.innerText = originalText;
-                icon.className = "fas fa-plus-circle";
-            }, 1000);
+            setTimeout(() => { span.innerText = "Agregar"; btn.classList.remove("bg-green-600"); }, 1000);
         }
 
         function removeFromCart(id) {
@@ -334,22 +389,19 @@
         }
 
         function saveAndSync() {
-            localStorage.setItem('luna_roja_cart_v4', JSON.stringify(cart));
+            localStorage.setItem('luna_roja_cart_final', JSON.stringify(cart));
             updateUI();
         }
 
         function updateUI() {
+            const countLabel = document.getElementById('cart-count');
             const content = document.getElementById('cart-content');
             const totalDisplay = document.getElementById('cart-total');
-            const countLabel = document.getElementById('cart-count');
-            const totalQty = cart.reduce((acc, i) => acc + i.quantity, 0);
-            countLabel.innerText = totalQty;
+            
+            countLabel.innerText = cart.reduce((acc, i) => acc + i.quantity, 0);
 
             if (cart.length === 0) {
-                content.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-slate-700 uppercase tracking-widest text-[10px] space-y-4">
-                    <i class="fas fa-shopping-basket text-4xl opacity-10"></i>
-                    <p>Tu bolsa está vacía</p>
-                </div>`;
+                content.innerHTML = `<p class="text-center text-slate-600 text-xs py-20 uppercase tracking-widest">Carrito Vacío</p>`;
                 totalDisplay.innerText = "$ 0,00";
                 return;
             }
@@ -359,18 +411,13 @@
                 const sub = item.precio * item.quantity;
                 total += sub;
                 return `
-                    <div class="flex items-center space-x-4">
-                        <img src="${item.imagen}" class="w-16 h-16 object-cover rounded-xl border border-white/5">
+                    <div class="flex items-center space-x-4 border-b border-white/5 pb-4">
+                        <img src="${item.imagen}" class="w-12 h-12 object-cover rounded bg-white/5">
                         <div class="flex-grow">
-                            <h4 class="text-sm font-semibold text-white line-clamp-1">${item.nombre}</h4>
-                            <p class="text-[10px] text-slate-500 mt-1 uppercase tracking-tighter">${item.quantity} Unidad(es) &times; $${item.precio.toLocaleString('es-AR')}</p>
+                            <h4 class="text-xs font-bold text-white">${item.nombre}</h4>
+                            <p class="text-[10px] text-slate-500 mt-1">${item.quantity} x $${item.precio.toLocaleString('es-AR')}</p>
                         </div>
-                        <div class="text-right">
-                            <p class="text-sm font-bold text-rose-500">$${sub.toLocaleString('es-AR')}</p>
-                            <button onclick="removeFromCart(${item.id})" class="text-slate-600 hover:text-white transition-colors mt-2">
-                                <i class="fas fa-times text-xs"></i>
-                            </button>
-                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-slate-500 hover:text-rose-500 transition-colors"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 `;
             }).join('');
@@ -385,28 +432,24 @@
                 sidebar.classList.remove('translate-x-full');
                 overlay.classList.remove('hidden');
                 setTimeout(() => overlay.classList.add('opacity-100'), 10);
-                document.body.style.overflow = 'hidden';
             } else {
                 sidebar.classList.add('translate-x-full');
                 overlay.classList.remove('opacity-100');
-                setTimeout(() => { overlay.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 500);
+                setTimeout(() => overlay.classList.add('hidden'), 500);
             }
         }
 
-        function sendDirectWhatsApp() {
-            window.open(`https://wa.me/${WHATSAPP_PHONE}`, '_blank');
-        }
+        function sendDirectWhatsApp() { window.open(`https://wa.me/${WHATSAPP_PHONE}`, '_blank'); }
 
         function sendToWhatsApp() {
             if (cart.length === 0) return;
             let total = 0;
-            let msg = "✨ *LUNA ROJA - NUEVO PEDIDO* ✨%0A%0A";
-            cart.forEach((i) => {
-                const sub = i.precio * i.quantity;
-                msg += `🔸 *${i.nombre}* (x${i.quantity})%0A   Subtotal: $${sub.toLocaleString('es-AR')}%0A%0A`;
-                total += sub;
+            let msg = "✨ *LUNA ROJA - PEDIDO WEB* ✨%0A%0A";
+            cart.forEach(i => {
+                msg += `🔸 *${i.nombre}* ${i.infoCorta ? `(${i.infoCorta})` : ''} x ${i.quantity}%0A`;
+                total += (i.precio * i.quantity);
             });
-            msg += `---%0A💰 *TOTAL A ABONAR: $${total.toLocaleString('es-AR')}*%0A---%0A%0A_Hola! Quisiera coordinar el pago de estos artículos._`;
+            msg += `%0A💰 *TOTAL: $${total.toLocaleString('es-AR')}*%0A%0A_Coordinamos el pago y envío._`;
             window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${msg}`, '_blank');
         }
 
@@ -418,5 +461,3 @@
     </script>
 </body>
 </html>
-
-
