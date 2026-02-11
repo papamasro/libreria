@@ -55,7 +55,9 @@
             position: relative;
             height: 28rem;
             z-index: 10;
-            cursor: pointer; /* Indicar que es interactivo */
+            cursor: pointer;
+            /* Evitar highlight azul en mobile al tocar */
+            -webkit-tap-highlight-color: transparent;
         }
         
         .product-card {
@@ -68,90 +70,83 @@
             left: 0;
             display: flex;
             flex-direction: column;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             overflow: hidden;
             border-radius: 1rem;
             transform-origin: center top;
+            /* Asegurar que la tarjeta cerrada no tape nada */
+            z-index: 10;
         }
 
-        /* --- ESCALADO DE TEXTOS (El requerimiento nuevo) --- */
-        /* Definimos transiciones suaves para los elementos de texto */
+        /* Textos con transición */
         .product-card h3, 
         .product-card .desc-text, 
         .product-card .price-text {
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
         }
 
-        /* --- HOVER DESKTOP --- */
-        @media (hover: hover) {
+        /* --- HOVER DESKTOP (Solo dispositivos con puntero fino) --- */
+        @media (hover: hover) and (pointer: fine) {
             .card-wrapper:hover { z-index: 50; }
             
             .card-wrapper:hover .product-card {
                 height: auto;
                 min-height: 100%;
-                width: 115%; /* Un poco más ancho */
+                width: 115%;
                 left: -7.5%; 
                 transform: translateY(-15px);
                 box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8);
                 border-color: var(--accent);
                 background: #1a1a1f;
+                z-index: 50;
             }
             .card-wrapper:hover .img-container { height: 20rem; }
             .card-wrapper:hover img { transform: scale(1.1); }
 
-            /* Agrandar textos en Hover Desktop */
-            .card-wrapper:hover h3 {
-                font-size: 1.25rem; /* ~20px */
-                color: var(--accent);
-            }
+            /* Textos Desktop */
+            .card-wrapper:hover h3 { font-size: 1.25rem; color: var(--accent); }
             .card-wrapper:hover .desc-text {
-                -webkit-line-clamp: unset; /* Mostrar todo el texto */
-                font-size: 0.95rem; /* Un poco más grande */
+                -webkit-line-clamp: unset;
+                font-size: 0.95rem;
                 color: #e2e8f0;
                 margin-bottom: 1rem;
             }
-            .card-wrapper:hover .price-text {
-                font-size: 1.5rem; /* Precio más grande */
-                color: white;
-            }
+            .card-wrapper:hover .price-text { font-size: 1.5rem; color: white; }
         }
 
-        /* --- ACTIVE MOBILE (Clase .active) --- */
-        .card-wrapper.active { z-index: 50; }
+        /* --- ACTIVE MOBILE (Clase .active activada por JS) --- */
+        .card-wrapper.active { 
+            z-index: 50; /* Traer al frente el contenedor */
+        }
         
         .card-wrapper.active .product-card {
             height: auto;
             min-height: 100%;
-            width: 110%; /* Crecimiento lateral en mobile */
-            left: -5%; 
-            transform: translateY(-10px);
-            box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.9);
+            width: 102%; /* Reducido para evitar solapamiento lateral excesivo */
+            left: -1%;   /* Centrado */
+            transform: translateY(-5px); /* Menos movimiento vertical para no tapar tanto al de abajo */
+            box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.95);
             border-color: var(--accent);
             background: #1a1a1f;
+            z-index: 50;
         }
         .card-wrapper.active .img-container { height: 18rem; }
         .card-wrapper.active img { transform: scale(1.05); }
 
-        /* Agrandar textos en Active Mobile */
-        .card-wrapper.active h3 {
-            font-size: 1.15rem; 
-            color: var(--accent);
-        }
+        /* Textos Mobile Activos */
+        .card-wrapper.active h3 { font-size: 1.15rem; color: var(--accent); }
         .card-wrapper.active .desc-text {
             -webkit-line-clamp: unset;
             font-size: 0.9rem;
             color: #e2e8f0;
             margin-bottom: 1rem;
         }
-        .card-wrapper.active .price-text {
-            font-size: 1.35rem;
-            color: white;
-        }
+        .card-wrapper.active .price-text { font-size: 1.35rem; color: white; }
 
-        /* Estilos base de componentes internos */
+        /* --- ESTILOS BASE --- */
         .img-container {
             height: 14rem; 
-            transition: height 0.4s ease;
+            transition: height 0.3s ease; /* Transición más rápida para sentir el cierre */
             border-top-left-radius: 0.9rem;
             border-top-right-radius: 0.9rem;
             overflow: hidden;
@@ -159,7 +154,7 @@
         }
         
         .img-container img {
-            transition: transform 0.6s ease;
+            transition: transform 0.5s ease;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -178,12 +173,12 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;  
             overflow: hidden;
-            font-size: 0.75rem; /* Tamaño base pequeño */
+            font-size: 0.75rem;
             color: var(--text-dim);
         }
         
-        h3 { font-size: 0.9rem; } /* Tamaño base título */
-        .price-text { font-size: 1.25rem; } /* Tamaño base precio */
+        h3 { font-size: 0.9rem; }
+        .price-text { font-size: 1.25rem; }
 
         /* --- UI ELEMENTS --- */
         .btn-action {
@@ -225,6 +220,14 @@
         }
         .animate-pulse-slow {
             animation: pulse-slow 4s infinite ease-in-out;
+        }
+        
+        /* Ajuste específico para enlaces del footer */
+        .social-pill:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.2);
         }
     </style>
 </head>
@@ -280,28 +283,87 @@
         </div>
     </main>
 
+    <!-- FOOTER ORIGINAL RESTAURADO -->
     <footer class="footer-site mt-20 pt-20 pb-10 px-6 bg-[#0f1115] text-white overflow-hidden relative">
+        <!-- Decoración sutil de fondo -->
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-rose-900/50 to-transparent"></div>
         
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col items-center mb-16">
+                <!-- Branding Central -->
                 <div class="flex flex-col items-center space-y-4 mb-12 text-center">
                     <div class="relative">
                         <i class="fas fa-moon text-rose-600 text-3xl animate-pulse-slow"></i>
                         <div class="absolute inset-0 blur-xl bg-rose-600/20"></div>
                     </div>
                     <span class="font-brand text-2xl tracking-[0.25em] text-white">LUNA ROJA</span>
+                    <p class="max-w-md text-slate-400 text-sm leading-relaxed font-light italic">
+                        "Explora nuestra cuidada selección de arte, objetos únicos y encuadernación artesanal en el corazón de Chacarita."
+                    </p>
                 </div>
-
-                <div class="flex gap-4">
-                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-rose-600 transition-colors"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-rose-600 transition-colors"><i class="far fa-envelope"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-rose-600 transition-colors"><i class="fas fa-map-marker-alt"></i></a>
+    
+                <!-- Grid de Interacción -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-5xl">
+                    
+                    <!-- Bloque 1: Conexión Digital -->
+                    <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm">
+                        <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Conectar</h4>
+                        <div class="flex flex-col space-y-3 w-full">
+                            <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" 
+                               class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
+                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all">
+                                    <i class="fab fa-instagram text-sm"></i>
+                                </span>
+                                <span class="text-sm text-slate-400 group-hover:text-white transition-colors">sublime.luna.roja</span>
+                            </a>
+                        </div>
+                    </div>
+    
+                    <!-- Bloque 2: Correo Directo -->
+                    <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm">
+                        <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Escribinos</h4>
+                        <a href="mailto:librerialunaroja@gmail.com" class="group flex flex-col space-y-1 w-full">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all">
+                                    <i class="far fa-envelope text-sm"></i>
+                                </span>
+                                <span class="text-sm text-slate-400 group-hover:text-white transition-colors truncate">librerialunaroja@gmail.com</span>
+                            </div>
+                        </a>
+                        <button onclick="sendDirectWhatsApp()" 
+                                class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300 mt-2">
+                            <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-green-600 group-hover:text-white transition-all">
+                                <i class="fab fa-whatsapp text-sm"></i>
+                            </span>
+                            <span class="text-sm text-slate-400 group-hover:text-white transition-colors">Enviar mensaje</span>
+                        </button>
+                    </div>
+    
+                    <!-- Bloque 3: Espacio Físico -->
+                    <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm md:col-span-2 lg:col-span-1">
+                        <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Visitanos</h4>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" 
+                           class="flex items-start space-x-3 group w-full">
+                            <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all shrink-0">
+                                <i class="fas fa-map-marker-alt text-sm"></i>
+                            </span>
+                            <div class="text-sm">
+                                <p class="text-slate-400 group-hover:text-white transition-colors leading-tight">Charlone 608, Chacarita</p>
+                                <p class="text-[11px] text-rose-600/70 mt-1 italic group-hover:text-rose-500 transition-colors">Buenos Aires, Argentina</p>
+                            </div>
+                        </a>
+                    </div>
+    
                 </div>
             </div>
-            
-            <div class="pt-10 border-t border-white/5 flex justify-center text-[10px] text-slate-600 uppercase tracking-[0.3em]">
+    
+            <!-- Copyright -->
+            <div class="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[10px] text-slate-600 uppercase tracking-[0.3em]">
                 <p>© 2026 Librería Luna Roja</p>
+                <div class="flex items-center space-x-2">
+                    <span class="w-8 h-[1px] bg-white/10"></span>
+                    <p>Hecho a mano en Argentina</p>
+                </div>
             </div>
         </div>
     </footer>
@@ -434,29 +496,29 @@
             const wrappers = document.querySelectorAll('.card-wrapper');
             
             wrappers.forEach(wrapper => {
-                // Removemos listeners anteriores para evitar duplicados si se llama varias veces
+                // Limpiar eventos previos
                 wrapper.onclick = null; 
                 
                 wrapper.onclick = (e) => {
-                    // Si el click fue en el botón de agregar, no hacer toggle
+                    // Ignorar si se hace click en el botón de compra
                     if (e.target.closest('.btn-action')) return;
 
                     const isActive = wrapper.classList.contains('active');
                     
-                    // 1. Cerramos TODAS las tarjetas (limpieza)
+                    // 1. Cerrar TODAS las tarjetas. Esto fuerza el reflujo de estilo.
                     document.querySelectorAll('.card-wrapper.active').forEach(el => {
                         el.classList.remove('active');
                     });
 
-                    // 2. Si la que tocamos NO estaba activa, la abrimos ahora.
-                    // Si ya estaba activa, el paso 1 ya la cerró, cumpliendo el toggle.
+                    // 2. Si NO estaba activa, la activamos.
+                    // Si ya estaba activa, el paso 1 ya la cerró y aquí termina (toggle off).
                     if (!isActive) {
                         wrapper.classList.add('active');
                     }
                 };
             });
 
-            // Cerrar si toca fuera
+            // Cerrar al hacer click fuera
             document.onclick = (e) => {
                 if (!e.target.closest('.card-wrapper') && !e.target.closest('.btn-action')) {
                     document.querySelectorAll('.card-wrapper.active').forEach(el => el.classList.remove('active'));
@@ -466,7 +528,7 @@
 
         function addToCart(id, btn, event) {
             if(event) {
-                event.stopPropagation(); // IMPORTANTE: Detiene la propagación
+                event.stopPropagation();
                 event.preventDefault();
             }
             const product = products.find(p => p.id === id);
@@ -542,6 +604,8 @@
             document.getElementById('back-btn').classList.add('hidden');
             initMobileCards();
         }
+
+        function sendDirectWhatsApp() { window.open(`https://wa.me/${WHATSAPP_PHONE}`, '_blank'); }
 
         function sendToWhatsApp() {
             if (cart.length === 0) return;
