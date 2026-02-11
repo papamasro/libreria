@@ -147,15 +147,13 @@
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-        /* --- NUEVO ESTILO DE FOOTER (FLUIDO Y ELEGANTE) --- */
+        /* --- FOOTER --- */
         .footer-site {
             background: radial-gradient(circle at top, #0f0f13 0%, #060608 100%);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .footer-column {
-            position: relative;
-        }
+        .footer-column { position: relative; }
 
         @media (min-width: 768px) {
             .footer-column:not(:last-child)::after {
@@ -205,6 +203,15 @@
             box-shadow: 0 4px 15px rgba(225, 29, 72, 0.2);
         }
 
+        /* Estilos grandes para el carrito */
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 0.75rem;
+            background: #16161a;
+        }
+
     </style>
 </head>
 <body class="antialiased">
@@ -222,8 +229,13 @@
                 </div>
             </div>
 
-            <div class="w-full md:max-w-md">
-                <div class="relative group">
+            <!-- Buscador con botón borrar -->
+            <div class="flex items-center gap-3 w-full md:max-w-md">
+                <button id="back-btn" onclick="clearSearch()" class="hidden bg-rose-600 hover:bg-rose-700 text-white w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-lg">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                
+                <div class="relative group flex-grow">
                     <input type="text" id="search-input" 
                            placeholder="Buscar en el catálogo..." 
                            class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-12 text-sm focus:outline-none focus:border-rose-500 focus:bg-white/10 transition-all placeholder:text-slate-600 text-white">
@@ -231,9 +243,14 @@
                 </div>
             </div>
 
-            <button onclick="toggleCart()" class="relative p-2 text-slate-300 hover:text-white transition-colors group">
-                <i class="fas fa-shopping-bag text-2xl"></i>
-                <span id="cart-count" class="absolute -top-1 -right-1 bg-rose-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-slate-950">0</span>
+            <!-- Botón del Carrito "Píldora" -->
+            <button onclick="toggleCart()" class="relative px-8 py-3 text-white bg-rose-600 rounded-full hover:bg-rose-700 transition-all group shadow-lg flex items-center space-x-3">
+                <div class="relative">
+                    <i class="fas fa-shopping-bag text-lg"></i>
+                    <!-- Contador centrado y estético -->
+                    <span id="cart-count" class="absolute -top-2 -right-3 bg-white text-rose-600 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border border-rose-600 shadow-sm transition-transform group-hover:scale-110">0</span>
+                </div>
+                <span class="text-xs font-bold uppercase tracking-widest hidden sm:inline">Carrito</span>
             </button>
         </div>
     </nav>
@@ -255,12 +272,11 @@
         </div>
     </main>
 
-    <!-- Footer Mejorado y Fluido -->
+    <!-- Footer Original Restaurado -->
     <footer class="footer-site mt-20 pt-16 pb-8 px-6">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16">
                 
-                <!-- Columna 1: Identidad -->
                 <div class="footer-column space-y-6">
                     <div class="flex items-center space-x-3">
                         <i class="fas fa-moon text-rose-600 text-xl"></i>
@@ -280,7 +296,6 @@
                     </div>
                 </div>
 
-                <!-- Columna 2: Contacto Rápido -->
                 <div class="footer-column space-y-4">
                     <h4 class="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold mb-4">Escribinos</h4>
                     <div class="space-y-1">
@@ -295,7 +310,6 @@
                     </div>
                 </div>
 
-                <!-- Columna 3: Localización -->
                 <div class="footer-column space-y-4">
                     <h4 class="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold mb-4">Visitanos</h4>
                     <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" class="contact-link group items-start">
@@ -308,7 +322,6 @@
                 </div>
             </div>
 
-            <!-- Créditos finales -->
             <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-600 uppercase tracking-[0.2em] gap-4">
                 <p>© 2026 Librería Luna Roja</p>
                 <div class="flex items-center space-x-4">
@@ -325,14 +338,18 @@
     
     <aside id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-md bg-[#0d0d10] z-[120] shadow-2xl flex flex-col translate-x-full transition-transform duration-500 border-l border-white/5">
         <div class="p-8 border-b border-white/5 flex justify-between items-center">
-            <h2 class="text-xl font-brand text-white">TU PEDIDO</h2>
+            <h2 class="text-2xl font-brand text-white tracking-widest">TU PEDIDO</h2>
             <button onclick="toggleCart()" class="text-slate-500 hover:text-rose-500 transition-colors text-3xl">&times;</button>
         </div>
-        <div id="cart-content" class="flex-grow overflow-y-auto p-8 space-y-6"></div>
+        
+        <div id="cart-content" class="flex-grow overflow-y-auto p-8 space-y-8">
+            <!-- Items Generados -->
+        </div>
+
         <div class="p-8 bg-black/40 border-t border-white/5">
             <div class="flex justify-between items-end mb-8">
                 <span class="text-slate-500 text-sm uppercase tracking-widest">Subtotal</span>
-                <span id="cart-total" class="text-2xl font-bold text-rose-500">$ 0,00</span>
+                <span id="cart-total" class="text-3xl font-bold text-rose-500">$ 0,00</span>
             </div>
             <button onclick="sendToWhatsApp()" class="btn-action text-white py-5 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg">
                 <i class="fab fa-whatsapp text-xl mr-3"></i> Finalizar Compra
@@ -473,13 +490,16 @@
                 const sub = item.precio * item.quantity;
                 total += sub;
                 return `
-                    <div class="flex items-center space-x-4 border-b border-white/5 pb-4">
-                        <img src="${item.imagen}" class="w-12 h-12 object-cover rounded bg-white/5">
+                    <div class="flex items-center space-x-5 animate-in fade-in slide-in-from-right-4 duration-300 border-b border-white/5 pb-4">
+                        <img src="${item.imagen}" class="cart-item-img shadow-2xl border border-white/10">
                         <div class="flex-grow">
-                            <h4 class="text-xs font-bold text-white">${item.nombre}</h4>
-                            <p class="text-[10px] text-slate-500 mt-1">${item.quantity} x $${item.precio.toLocaleString('es-AR')}</p>
+                            <h4 class="text-lg font-bold text-white leading-tight">${item.nombre}</h4>
+                            <div class="flex items-center justify-between mt-3">
+                                <span class="bg-rose-500/10 text-rose-500 text-xs px-2 py-1 rounded font-bold">${item.quantity} unidades</span>
+                                <p class="text-base text-slate-400 font-semibold">$${sub.toLocaleString('es-AR')}</p>
+                            </div>
                         </div>
-                        <button onclick="removeFromCart(${item.id})" class="text-slate-500 hover:text-rose-500 transition-colors"><i class="fas fa-trash-alt"></i></button>
+                        <button onclick="removeFromCart(${item.id})" class="text-slate-700 hover:text-rose-500 transition-colors p-2 text-xl"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 `;
             }).join('');
@@ -501,6 +521,13 @@
             }
         }
 
+        function clearSearch() {
+            const input = document.getElementById('search-input');
+            input.value = '';
+            displayProducts(products);
+            document.getElementById('back-btn').classList.add('hidden');
+        }
+
         function sendDirectWhatsApp() { window.open(`https://wa.me/${WHATSAPP_PHONE}`, '_blank'); }
 
         function sendToWhatsApp() {
@@ -517,10 +544,11 @@
 
         document.getElementById('search-input').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
+            const backBtn = document.getElementById('back-btn');
+            if(term.length > 0) backBtn.classList.remove('hidden'); else backBtn.classList.add('hidden');
             const filtered = products.filter(p => p.nombre.toLowerCase().includes(term) || p.descripcion.toLowerCase().includes(term));
             displayProducts(filtered);
         });
     </script>
 </body>
 </html>
-
