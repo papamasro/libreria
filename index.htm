@@ -61,7 +61,7 @@
             flex-direction: column;
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             overflow: hidden;
-            border-radius: 1rem; /* Esquinas redondeadas base */
+            border-radius: 1rem;
             transform-origin: center top;
         }
 
@@ -79,13 +79,11 @@
             background: #1a1a1f;
         }
 
-        /* Corrección de esquinas en hover */
         .card-wrapper:hover .img-container {
             border-top-left-radius: 1rem;
             border-top-right-radius: 1rem;
         }
         
-        /* Contenedor inferior en hover para mantener redondeado el botón/fondo */
         .card-wrapper:hover .info-content {
             border-bottom-left-radius: 1rem;
             border-bottom-right-radius: 1rem;
@@ -149,13 +147,64 @@
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-        .footer-glow { position: relative; }
-        .footer-glow::before {
-            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 80%; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0.3;
+        /* --- NUEVO ESTILO DE FOOTER (FLUIDO Y ELEGANTE) --- */
+        .footer-site {
+            background: radial-gradient(circle at top, #0f0f13 0%, #060608 100%);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
+
+        .footer-column {
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .footer-column:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                right: -1.5rem;
+                top: 10%;
+                height: 80%;
+                width: 1px;
+                background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05), transparent);
+            }
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            background: transparent;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: rgba(225, 29, 72, 0.03);
+            border-color: rgba(225, 29, 72, 0.1);
+            color: var(--accent);
+        }
+
+        .social-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-pill:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.2);
+        }
+
     </style>
 </head>
 <body class="antialiased">
@@ -206,55 +255,68 @@
         </div>
     </main>
 
-    <!-- Footer Completo Restaurado -->
-    <footer class="footer-glow mt-20 bg-[#060608] border-t border-white/5 py-16 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div class="col-span-1 md:col-span-2 space-y-6">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-moon text-rose-600 text-2xl"></i>
-                    <span class="font-brand text-2xl tracking-tighter text-white">LUNA ROJA</span>
-                </div>
-                <p class="text-slate-400 text-sm max-w-sm leading-relaxed font-light">
-                    Explora nuestra selección de arte, objetos únicos y encuadernación artesanal. 
-                    Cada pieza cuenta una historia diferente en nuestro rincón de Chacarita.
-                </p>
-            </div>
-            
-            <div class="space-y-4">
-                <h4 class="text-xs uppercase tracking-widest text-slate-500 font-bold">Contacto</h4>
-                <ul class="space-y-4">
-                    <li>
-                        <a href="mailto:librerialunaroja@gmail.com" class="text-slate-300 hover:text-rose-500 text-sm transition-colors flex items-center group">
-                            <i class="far fa-envelope mr-3 text-rose-600/50 group-hover:text-rose-500"></i> librerialunaroja@gmail.com
+    <!-- Footer Mejorado y Fluido -->
+    <footer class="footer-site mt-20 pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16">
+                
+                <!-- Columna 1: Identidad -->
+                <div class="footer-column space-y-6">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-moon text-rose-600 text-xl"></i>
+                        <span class="font-brand text-xl tracking-[0.1em] text-white">LUNA ROJA</span>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed font-light">
+                        Explora nuestra selección de arte, objetos únicos y encuadernación artesanal. 
+                        Un rincón de creación propia en Chacarita.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="social-pill">
+                            <i class="fab fa-instagram"></i> Instagram
                         </a>
-                    </li>
-                    <li>
-                        <button onclick="sendDirectWhatsApp()" class="text-slate-300 hover:text-rose-500 text-sm transition-colors flex items-center group">
-                            <i class="fab fa-whatsapp mr-3 text-rose-600/50 group-hover:text-rose-500"></i> Nuestro WhatsApp
+                        <button onclick="sendDirectWhatsApp()" class="social-pill">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
                         </button>
-                    </li>
-                    <li>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" class="text-slate-300 hover:text-rose-500 text-sm transition-colors flex items-start group">
-                            <i class="fas fa-map-marker-alt mr-3 mt-1 text-rose-600/50 group-hover:text-rose-500"></i> 
-                            <span>Chacarita, Charlone 608<br><span class="text-xs text-slate-500">Ver ubicación</span></span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                    </div>
+                </div>
 
-            <div class="space-y-4">
-                <h4 class="text-xs uppercase tracking-widest text-slate-500 font-bold">Seguinos</h4>
-                <div class="flex space-x-4">
-                    <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:border-rose-500 hover:text-rose-500 transition-all">
-                        <i class="fab fa-instagram"></i>
+                <!-- Columna 2: Contacto Rápido -->
+                <div class="footer-column space-y-4">
+                    <h4 class="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold mb-4">Escribinos</h4>
+                    <div class="space-y-1">
+                        <a href="mailto:librerialunaroja@gmail.com" class="contact-link group">
+                            <i class="far fa-envelope w-8 text-rose-600/60 group-hover:text-rose-500 transition-colors"></i>
+                            <span class="text-sm text-slate-300 group-hover:text-white transition-colors">librerialunaroja@gmail.com</span>
+                        </a>
+                        <button onclick="sendDirectWhatsApp()" class="contact-link group w-full text-left">
+                            <i class="fab fa-whatsapp w-8 text-rose-600/60 group-hover:text-rose-500 transition-colors"></i>
+                            <span class="text-sm text-slate-300 group-hover:text-white transition-colors">Chat de Consultas</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Columna 3: Localización -->
+                <div class="footer-column space-y-4">
+                    <h4 class="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold mb-4">Visitanos</h4>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" class="contact-link group items-start">
+                        <i class="fas fa-map-marker-alt w-8 mt-1 text-rose-600/60 group-hover:text-rose-500 transition-colors"></i>
+                        <div class="text-sm">
+                            <p class="text-slate-300 group-hover:text-white transition-colors">Charlone 608, Chacarita</p>
+                            <p class="text-[11px] text-slate-500 mt-0.5 italic">Buenos Aires, Argentina</p>
+                        </div>
                     </a>
                 </div>
             </div>
-        </div>
-        
-        <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between text-[10px] text-slate-600 uppercase tracking-[0.2em]">
-            <p>© 2026 Librería Luna Roja. Todos los derechos reservados.</p>
-            <p class="mt-4 md:mt-0 italic font-bold">Artesanía & Alma Digital</p>
+
+            <!-- Créditos finales -->
+            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-600 uppercase tracking-[0.2em] gap-4">
+                <p>© 2026 Librería Luna Roja</p>
+                <div class="flex items-center space-x-4">
+                    <span class="italic">Encuadernación & Arte</span>
+                    <span class="text-rose-900">|</span>
+                    <span class="font-bold text-slate-500">Hecho a mano</span>
+                </div>
+            </div>
         </div>
     </footer>
 
