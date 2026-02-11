@@ -56,7 +56,6 @@
             height: 28rem;
             z-index: 10;
             cursor: pointer;
-            /* Evitar highlight azul en mobile al tocar */
             -webkit-tap-highlight-color: transparent;
         }
         
@@ -74,7 +73,6 @@
             overflow: hidden;
             border-radius: 1rem;
             transform-origin: center top;
-            /* Asegurar que la tarjeta cerrada no tape nada */
             z-index: 10;
         }
 
@@ -103,7 +101,6 @@
             .card-wrapper:hover .img-container { height: 20rem; }
             .card-wrapper:hover img { transform: scale(1.1); }
 
-            /* Textos Desktop */
             .card-wrapper:hover h3 { font-size: 1.25rem; color: var(--accent); }
             .card-wrapper:hover .desc-text {
                 -webkit-line-clamp: unset;
@@ -114,30 +111,31 @@
             .card-wrapper:hover .price-text { font-size: 1.5rem; color: white; }
         }
 
-        /* --- ACTIVE MOBILE (Clase .active activada por JS) --- */
+        /* --- ACTIVE MOBILE (Ajuste solicitado) --- */
         .card-wrapper.active { 
-            z-index: 50; /* Traer al frente el contenedor */
+            z-index: 50; 
         }
         
         .card-wrapper.active .product-card {
             height: auto;
             min-height: 100%;
-            width: 102%; /* Reducido para evitar solapamiento lateral excesivo */
-            left: -1%;   /* Centrado */
-            transform: translateY(-5px); /* Menos movimiento vertical para no tapar tanto al de abajo */
+            width: 102%; 
+            left: -1%;   
+            transform: translateY(-5px); 
             box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.95);
             border-color: var(--accent);
             background: #1a1a1f;
             z-index: 50;
         }
-        .card-wrapper.active .img-container { height: 18rem; }
+        /* Aumenté la altura de la imagen en mobile cuando está activa (era 18rem) */
+        .card-wrapper.active .img-container { height: 21rem; }
         .card-wrapper.active img { transform: scale(1.05); }
 
-        /* Textos Mobile Activos */
         .card-wrapper.active h3 { font-size: 1.15rem; color: var(--accent); }
+        /* Reduje un poco el tamaño del texto para darle prioridad a la imagen (era 0.9rem) */
         .card-wrapper.active .desc-text {
             -webkit-line-clamp: unset;
-            font-size: 0.9rem;
+            font-size: 0.85rem; 
             color: #e2e8f0;
             margin-bottom: 1rem;
         }
@@ -146,7 +144,7 @@
         /* --- ESTILOS BASE --- */
         .img-container {
             height: 14rem; 
-            transition: height 0.3s ease; /* Transición más rápida para sentir el cierre */
+            transition: height 0.3s ease;
             border-top-left-radius: 0.9rem;
             border-top-right-radius: 0.9rem;
             overflow: hidden;
@@ -222,7 +220,6 @@
             animation: pulse-slow 4s infinite ease-in-out;
         }
         
-        /* Ajuste específico para enlaces del footer */
         .social-pill:hover {
             background: var(--accent);
             color: white;
@@ -283,9 +280,8 @@
         </div>
     </main>
 
-    <!-- FOOTER ORIGINAL RESTAURADO -->
+    <!-- FOOTER -->
     <footer class="footer-site mt-20 pt-20 pb-10 px-6 bg-[#0f1115] text-white overflow-hidden relative">
-        <!-- Decoración sutil de fondo -->
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-rose-900/50 to-transparent"></div>
         
         <div class="max-w-7xl mx-auto">
@@ -302,13 +298,12 @@
                     </p>
                 </div>
     
-                <!-- Grid de Interacción -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-5xl">
                     
                     <!-- Bloque 1: Conexión Digital -->
                     <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm">
                         <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Conectar</h4>
-                        <div class="flex flex-col space-y-3 w-full">
+                        <div class="flex flex-col space-y-3 w-fit md:w-full">
                             <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" 
                                class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
                                 <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all">
@@ -319,45 +314,47 @@
                         </div>
                     </div>
     
-                    <!-- Bloque 2: Correo Directo -->
+                    <!-- Bloque 2: Correo Directo (ARREGLADO AHORA SÍ) -->
                     <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm">
                         <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Escribinos</h4>
-                        <a href="mailto:librerialunaroja@gmail.com" class="group flex flex-col space-y-1 w-full">
-                            <div class="flex items-center space-x-3">
-                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all">
+                        <!-- Wrapper mágico: Centrado en el bloque, pero alinea items a la izquierda adentro -->
+                        <div class="flex flex-col space-y-3 w-fit md:w-full">
+                            <a href="mailto:librerialunaroja@gmail.com" class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
+                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all shrink-0">
                                     <i class="far fa-envelope text-sm"></i>
                                 </span>
                                 <span class="text-sm text-slate-400 group-hover:text-white transition-colors truncate">librerialunaroja@gmail.com</span>
-                            </div>
-                        </a>
-                        <button onclick="sendDirectWhatsApp()" 
-                                class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300 mt-2">
-                            <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-green-600 group-hover:text-white transition-all">
-                                <i class="fab fa-whatsapp text-sm"></i>
-                            </span>
-                            <span class="text-sm text-slate-400 group-hover:text-white transition-colors">Enviar mensaje</span>
-                        </button>
+                            </a>
+                            <button onclick="sendDirectWhatsApp()" 
+                                    class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
+                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-green-600 group-hover:text-white transition-all shrink-0">
+                                    <i class="fab fa-whatsapp text-sm"></i>
+                                </span>
+                                <span class="text-sm text-slate-400 group-hover:text-white transition-colors">Enviar mensaje</span>
+                            </button>
+                        </div>
                     </div>
     
                     <!-- Bloque 3: Espacio Físico -->
                     <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm md:col-span-2 lg:col-span-1">
                         <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Visitanos</h4>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" 
-                           class="flex items-start space-x-3 group w-full">
-                            <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all shrink-0">
-                                <i class="fas fa-map-marker-alt text-sm"></i>
-                            </span>
-                            <div class="text-sm">
-                                <p class="text-slate-400 group-hover:text-white transition-colors leading-tight">Charlone 608, Chacarita</p>
-                                <p class="text-[11px] text-rose-600/70 mt-1 italic group-hover:text-rose-500 transition-colors">Buenos Aires, Argentina</p>
-                            </div>
-                        </a>
+                        <div class="flex flex-col space-y-3 w-fit md:w-full">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" 
+                               class="flex items-start space-x-3 group w-full">
+                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all shrink-0">
+                                    <i class="fas fa-map-marker-alt text-sm"></i>
+                                </span>
+                                <div class="text-sm">
+                                    <p class="text-slate-400 group-hover:text-white transition-colors leading-tight">Charlone 608, Chacarita</p>
+                                    <p class="text-[11px] text-rose-600/70 mt-1 italic group-hover:text-rose-500 transition-colors">Buenos Aires, Argentina</p>
+                                </div>
+                            </a>
+                        </div>
                     </div>
     
                 </div>
             </div>
     
-            <!-- Copyright -->
             <div class="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[10px] text-slate-600 uppercase tracking-[0.3em]">
                 <p>© 2026 Librería Luna Roja</p>
                 <div class="flex items-center space-x-2">
@@ -441,7 +438,6 @@
                 initMobileCards(); 
             } catch (err) {
                 console.error("Usando datos de fallback por error:", err);
-                // Fallback data para que el usuario pueda probar el diseño
                 products = [
                     { id: 101, nombre: "Cuaderno Artesanal", descripcion: "Encuadernación copta hecha a mano con papel ahuesado de 80gr. Tapa dura forrada en tela.", stock: 5, precio: 15000, imagen: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600", infoCorta: "Hecho a mano" },
                     { id: 102, nombre: "Pluma Estilográfica", descripcion: "Pluma de trazo fino con cuerpo metálico y acabado mate. Incluye cartucho de tinta negra.", stock: 10, precio: 25000, imagen: "https://images.unsplash.com/photo-1585336261022-680e295ce3fe?auto=format&fit=crop&q=80&w=600", infoCorta: "Importado" },
@@ -496,29 +492,23 @@
             const wrappers = document.querySelectorAll('.card-wrapper');
             
             wrappers.forEach(wrapper => {
-                // Limpiar eventos previos
                 wrapper.onclick = null; 
                 
                 wrapper.onclick = (e) => {
-                    // Ignorar si se hace click en el botón de compra
                     if (e.target.closest('.btn-action')) return;
 
                     const isActive = wrapper.classList.contains('active');
                     
-                    // 1. Cerrar TODAS las tarjetas. Esto fuerza el reflujo de estilo.
                     document.querySelectorAll('.card-wrapper.active').forEach(el => {
                         el.classList.remove('active');
                     });
 
-                    // 2. Si NO estaba activa, la activamos.
-                    // Si ya estaba activa, el paso 1 ya la cerró y aquí termina (toggle off).
                     if (!isActive) {
                         wrapper.classList.add('active');
                     }
                 };
             });
 
-            // Cerrar al hacer click fuera
             document.onclick = (e) => {
                 if (!e.target.closest('.card-wrapper') && !e.target.closest('.btn-action')) {
                     document.querySelectorAll('.card-wrapper.active').forEach(el => el.classList.remove('active'));
