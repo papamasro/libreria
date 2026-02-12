@@ -76,14 +76,13 @@
             z-index: 10;
         }
 
-        /* Textos con transición */
         .product-card h3, 
         .product-card .desc-text, 
         .product-card .price-text {
             transition: all 0.3s ease;
         }
 
-        /* --- HOVER DESKTOP (Solo dispositivos con puntero fino) --- */
+        /* --- HOVER DESKTOP --- */
         @media (hover: hover) and (pointer: fine) {
             .card-wrapper:hover { z-index: 50; }
             
@@ -100,7 +99,6 @@
             }
             .card-wrapper:hover .img-container { height: 20rem; }
             .card-wrapper:hover img { transform: scale(1.1); }
-
             .card-wrapper:hover h3 { font-size: 1.25rem; color: var(--accent); }
             .card-wrapper:hover .desc-text {
                 -webkit-line-clamp: unset;
@@ -111,11 +109,8 @@
             .card-wrapper:hover .price-text { font-size: 1.5rem; color: white; }
         }
 
-        /* --- ACTIVE MOBILE (Ajuste solicitado) --- */
-        .card-wrapper.active { 
-            z-index: 50; 
-        }
-        
+        /* --- ACTIVE MOBILE --- */
+        .card-wrapper.active { z-index: 50; }
         .card-wrapper.active .product-card {
             height: auto;
             min-height: 100%;
@@ -127,12 +122,9 @@
             background: #1a1a1f;
             z-index: 50;
         }
-        /* Aumenté la altura de la imagen en mobile cuando está activa (era 18rem) */
         .card-wrapper.active .img-container { height: 21rem; }
         .card-wrapper.active img { transform: scale(1.05); }
-
         .card-wrapper.active h3 { font-size: 1.15rem; color: var(--accent); }
-        /* Reduje un poco el tamaño del texto para darle prioridad a la imagen (era 0.9rem) */
         .card-wrapper.active .desc-text {
             -webkit-line-clamp: unset;
             font-size: 0.85rem; 
@@ -178,7 +170,6 @@
         h3 { font-size: 0.9rem; }
         .price-text { font-size: 1.25rem; }
 
-        /* --- UI ELEMENTS --- */
         .btn-action {
             background: linear-gradient(to right, #e11d48, #be123c);
             transition: all 0.3s ease;
@@ -218,13 +209,6 @@
         }
         .animate-pulse-slow {
             animation: pulse-slow 4s infinite ease-in-out;
-        }
-        
-        .social-pill:hover {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.2);
         }
     </style>
 </head>
@@ -286,7 +270,6 @@
         
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col items-center mb-16">
-                <!-- Branding Central -->
                 <div class="flex flex-col items-center space-y-4 mb-12 text-center">
                     <div class="relative">
                         <i class="fas fa-moon text-rose-600 text-3xl animate-pulse-slow"></i>
@@ -300,24 +283,31 @@
     
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-5xl">
                     
-                    <!-- Bloque 1: Conexión Digital -->
+                    <!-- Bloque 1: Redes Sociales -->
                     <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm">
-                        <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Conectar</h4>
+                        <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Redes</h4>
                         <div class="flex flex-col space-y-3 w-fit md:w-full">
                             <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" 
                                class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
                                 <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all">
                                     <i class="fab fa-instagram text-sm"></i>
                                 </span>
-                                <span class="text-sm text-slate-400 group-hover:text-white transition-colors">sublime.luna.roja</span>
+                                <span class="text-sm text-slate-400 group-hover:text-white transition-colors">Instagram</span>
+                            </a>
+                            <!-- FACEBOOK AÑADIDO -->
+                            <a href="https://www.facebook.com/librerialunaroja" target="_blank" 
+                               class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
+                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                    <i class="fab fa-facebook-f text-sm"></i>
+                                </span>
+                                <span class="text-sm text-slate-400 group-hover:text-white transition-colors">Facebook</span>
                             </a>
                         </div>
                     </div>
     
-                    <!-- Bloque 2: Correo Directo (ARREGLADO AHORA SÍ) -->
+                    <!-- Bloque 2: Contacto -->
                     <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm">
                         <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Escribinos</h4>
-                        <!-- Wrapper mágico: Centrado en el bloque, pero alinea items a la izquierda adentro -->
                         <div class="flex flex-col space-y-3 w-fit md:w-full">
                             <a href="mailto:librerialunaroja@gmail.com" class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
                                 <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all shrink-0">
@@ -335,7 +325,7 @@
                         </div>
                     </div>
     
-                    <!-- Bloque 3: Espacio Físico -->
+                    <!-- Bloque 3: Ubicación -->
                     <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm md:col-span-2 lg:col-span-1">
                         <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Visitanos</h4>
                         <div class="flex flex-col space-y-3 w-fit md:w-full">
@@ -351,7 +341,6 @@
                             </a>
                         </div>
                     </div>
-    
                 </div>
             </div>
     
@@ -390,10 +379,19 @@
         const SHEET_ID = "11s7m68TJhweA-lNP0QSVSfXDV8wRBNHbRT0ubremuuM";
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
 
+        // URL de la imagen de fallback elegante
+        const NO_IMAGE_URL = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%2316161a'/%3E%3Ccircle cx='200' cy='180' r='40' fill='%23e11d48' opacity='0.1'/%3E%3Cpath d='M200 150a30 30 0 1 0 30 30c0-1.5-.1-3-.3-4.5a18 18 0 0 1-14.7 7.5 18 18 0 0 1-18-18 18 18 0 0 1 7.5-14.7c-1.5-.2-3-.3-4.5-.3z' fill='%23e11d48'/%3E%3Ctext x='50%25' y='260' font-family='Inter, sans-serif' font-size='14' font-weight='600' fill='%23475569' text-anchor='middle' letter-spacing='2'%3EIMAGEN NO DISPONIBLE%3C/text%3E%3C/svg%3E`;
+
         let products = [];
         let cart = JSON.parse(localStorage.getItem('luna_roja_cart_final')) || [];
 
         window.onload = loadStock;
+
+        function handleImgError(img) {
+            img.onerror = null; // Prevenir bucles
+            img.src = NO_IMAGE_URL;
+            img.classList.add('opacity-40');
+        }
 
         function parsePrice(val) {
             if (!val) return 0;
@@ -421,13 +419,14 @@
                 products = rows.map((row, index) => {
                     const parts = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     const clean = (str) => str ? str.replace(/^"|"$/g, '').trim() : "";
+                    const imgUrl = clean(parts[4]);
                     return {
                         id: index,
                         nombre: clean(parts[0]),
                         descripcion: clean(parts[1]),
                         stock: parseInt(clean(parts[2])) || 0,
                         precio: parsePrice(clean(parts[3])),
-                        imagen: clean(parts[4]),
+                        imagen: imgUrl === "" ? NO_IMAGE_URL : imgUrl,
                         infoCorta: clean(parts[5])
                     };
                 }).filter(p => p.nombre !== "");
@@ -437,17 +436,8 @@
                 updateUI();
                 initMobileCards(); 
             } catch (err) {
-                console.error("Usando datos de fallback por error:", err);
-                products = [
-                    { id: 101, nombre: "Cuaderno Artesanal", descripcion: "Encuadernación copta hecha a mano con papel ahuesado de 80gr. Tapa dura forrada en tela.", stock: 5, precio: 15000, imagen: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600", infoCorta: "Hecho a mano" },
-                    { id: 102, nombre: "Pluma Estilográfica", descripcion: "Pluma de trazo fino con cuerpo metálico y acabado mate. Incluye cartucho de tinta negra.", stock: 10, precio: 25000, imagen: "https://images.unsplash.com/photo-1585336261022-680e295ce3fe?auto=format&fit=crop&q=80&w=600", infoCorta: "Importado" },
-                    { id: 103, nombre: "Set de Acuarelas", descripcion: "Paleta de 24 colores profesionales de alta pigmentación. Ideal para viaje y bocetos rápidos.", stock: 0, precio: 45000, imagen: "https://images.unsplash.com/photo-1629196914375-f7e48f477b6d?auto=format&fit=crop&q=80&w=600", infoCorta: "Profesional" },
-                    { id: 104, nombre: "Libreta de Bocetos", descripcion: "Papel de alto gramaje especial para técnicas mixtas. 50 hojas libres de ácido.", stock: 8, precio: 12000, imagen: "https://images.unsplash.com/photo-1531346878377-a513bc95ba0d?auto=format&fit=crop&q=80&w=600", infoCorta: "Nuevo" },
-                ];
-                displayProducts(products);
-                document.getElementById('loading-state').style.display = 'none';
-                updateUI();
-                initMobileCards();
+                console.error("Error al cargar datos:", err);
+                document.getElementById('loading-state').innerHTML = `<p class="text-rose-500">Error al cargar el catálogo</p>`;
             }
         }
 
@@ -463,7 +453,9 @@
                     <div class="card-wrapper" data-id="${p.id}">
                         <div class="product-card">
                             <div class="img-container relative flex items-center justify-center">
-                                <img src="${p.imagen}" alt="${p.nombre}" class="${isOutOfStock ? 'opacity-30' : ''}" onerror="this.src='https://via.placeholder.com/400/16161a/e11d48?text=Luna+Roja'">
+                                <img src="${p.imagen}" alt="${p.nombre}" 
+                                     class="${isOutOfStock ? 'opacity-30' : ''}" 
+                                     onerror="handleImgError(this)">
                                 ${isOutOfStock ? '<span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold bg-black/60 px-4 py-2 rounded-full border border-white/10 tracking-widest text-white backdrop-blur-sm">AGOTADO</span>' : ''}
                             </div>
                             
@@ -490,30 +482,19 @@
 
         function initMobileCards() {
             const wrappers = document.querySelectorAll('.card-wrapper');
-            
             wrappers.forEach(wrapper => {
-                wrapper.onclick = null; 
-                
                 wrapper.onclick = (e) => {
                     if (e.target.closest('.btn-action')) return;
-
                     const isActive = wrapper.classList.contains('active');
-                    
-                    document.querySelectorAll('.card-wrapper.active').forEach(el => {
-                        el.classList.remove('active');
-                    });
-
-                    if (!isActive) {
-                        wrapper.classList.add('active');
-                    }
+                    document.querySelectorAll('.card-wrapper.active').forEach(el => el.classList.remove('active'));
+                    if (!isActive) wrapper.classList.add('active');
                 };
             });
-
-            document.onclick = (e) => {
+            document.addEventListener('click', (e) => {
                 if (!e.target.closest('.card-wrapper') && !e.target.closest('.btn-action')) {
                     document.querySelectorAll('.card-wrapper.active').forEach(el => el.classList.remove('active'));
                 }
-            };
+            });
         }
 
         function addToCart(id, btn, event) {
@@ -557,7 +538,7 @@
                 total += sub;
                 return `
                     <div class="flex items-center space-x-5 border-b border-white/5 pb-4">
-                        <img src="${item.imagen}" class="w-16 h-16 object-cover rounded shadow border border-white/10">
+                        <img src="${item.imagen}" class="w-16 h-16 object-cover rounded shadow border border-white/10" onerror="handleImgError(this)">
                         <div class="flex-grow">
                             <h4 class="text-sm font-bold text-white leading-tight">${item.nombre}</h4>
                             <div class="flex items-center justify-between mt-2">
