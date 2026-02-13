@@ -69,7 +69,6 @@
             height: 28rem;
             z-index: 10;
             cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
         }
         
         .product-card {
@@ -101,13 +100,17 @@
                 box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8);
                 border-color: var(--accent);
                 background: #1a1a1f;
+                z-index: 50;
             }
             .card-wrapper:hover .img-container { height: 18rem; }
-            .card-wrapper:hover img { transform: scale(1.1); }
+            /* Ajustamos el scale para que no corte con las flechas */
+            .card-wrapper:hover img { transform: scale(1.05); } 
             .card-wrapper:hover .desc-text {
                 -webkit-line-clamp: unset;
                 color: #e2e8f0;
             }
+            /* Mostrar flechas al hacer hover */
+            .card-wrapper:hover .carousel-btn { opacity: 1; }
         }
 
         /* --- ACTIVE MOBILE --- */
@@ -121,7 +124,15 @@
             box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.95);
             border-color: var(--accent);
             background: #1a1a1f;
+            z-index: 50;
         }
+        .card-wrapper.active .img-container { height: 21rem; }
+        .card-wrapper.active img { transform: scale(1.05); }
+        .card-wrapper.active .desc-text {
+            -webkit-line-clamp: unset;
+            color: #e2e8f0;
+        }
+        .card-wrapper.active .carousel-btn { opacity: 1; }
 
         .img-container {
             height: 14rem; 
@@ -130,6 +141,7 @@
             background: #0c0c0e;
             border-top-left-radius: 0.9rem;
             border-top-right-radius: 0.9rem;
+            position: relative; /* Necesario para posicionar flechas */
         }
         
         .img-container img {
@@ -138,6 +150,32 @@
             height: 100%;
             object-fit: cover;
         }
+
+        /* Estilos para botones del carrusel */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            opacity: 0; /* Oculto por defecto */
+            transition: all 0.3s ease;
+        }
+        .carousel-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .carousel-btn.prev { left: 10px; }
+        .carousel-btn.next { right: 10px; }
 
         .info-content {
             padding: 1.25rem;
@@ -232,13 +270,8 @@
             background: #16161a;
         }
         
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
         @keyframes pulse-slow {
             0%, 100% { opacity: 1; transform: scale(1); }
@@ -271,7 +304,6 @@
                 <button id="back-btn" onclick="clearSearch()" class="hidden bg-rose-600 hover:bg-rose-700 text-white w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-lg">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                
                 <div class="relative group flex-grow">
                     <input type="text" id="search-input" 
                            placeholder="Buscar..." 
@@ -299,10 +331,8 @@
                 <div class="w-12 h-1 bg-rose-600"></div>
             </div>
             
-            <!-- CONTENEDOR DE FILTROS -->
-            <div id="category-filters" class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide w-full md:w-auto">
-                <!-- Se inyectan JS -->
-            </div>
+            <!-- Filtros -->
+            <div id="category-filters" class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide w-full md:w-auto"></div>
         </div>
 
         <div id="loading-state" class="flex flex-col items-center justify-center py-20">
@@ -310,91 +340,68 @@
             <span class="text-xs uppercase tracking-[0.4em] text-slate-500 font-bold">Invocando catálogo</span>
         </div>
 
-        <!-- SE REDUJO EL PADDING BOTTOM DE 32 A 12 PARA ACERCAR EL FOOTER -->
         <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 pb-12">
             <!-- Items JS -->
         </div>
     </main>
 
-    <!-- FOOTER (mt-0 en lugar de mt-20) -->
+    <!-- FOOTER -->
     <footer class="footer-site mt-0 pt-20 pb-10 px-6 bg-[#0f1115] text-white overflow-hidden relative">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-rose-900/50 to-transparent"></div>
         
         <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col items-center mb-16">
-                <div class="flex flex-col items-center space-y-4 mb-12 text-center">
-                    <div class="relative">
-                        <i class="fas fa-moon text-rose-600 text-3xl animate-pulse-slow"></i>
-                        <div class="absolute inset-0 blur-xl bg-rose-600/20"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16">
+                
+                <!-- Col 1: Redes -->
+                <div class="footer-column space-y-6">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-moon text-rose-600 text-xl"></i>
+                        <span class="font-brand text-xl tracking-[0.1em] text-white">LUNA ROJA</span>
                     </div>
-                    <span class="font-brand text-2xl tracking-[0.25em] text-white">LUNA ROJA</span>
-                    <p class="max-w-md text-slate-400 text-sm leading-relaxed font-light italic">
-                        "Explora nuestra cuidada selección de arte, objetos únicos y encuadernación artesanal en el corazón de Chacarita."
+                    <p class="text-slate-400 text-sm leading-relaxed font-light">
+                        Explora nuestra cuidada selección de arte, objetos únicos y encuadernación artesanal.
                     </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="social-pill">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </a>
+                        <a href="https://www.facebook.com/people/Sublime-Luna-Roja/61559491830875" target="_blank" class="social-pill">
+                            <i class="fab fa-facebook-f"></i> Facebook
+                        </a>
+                        <button onclick="sendDirectWhatsApp()" class="social-pill">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                    </div>
                 </div>
-    
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-5xl">
-                    
-                    <!-- Bloque 1: Redes Sociales -->
-                    <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm">
-                        <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Redes</h4>
-                        <div class="flex flex-col space-y-3 w-fit md:w-full">
-                            <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" 
-                               class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
-                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all">
-                                    <i class="fab fa-instagram text-sm"></i>
-                                </span>
-                                <span class="text-sm text-slate-400 group-hover:text-white transition-colors">Instagram</span>
-                            </a>
-                            <a href="https://www.facebook.com/people/Sublime-Luna-Roja/61559491830875" target="_blank" 
-                               class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
-                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                                    <i class="fab fa-facebook-f text-sm"></i>
-                                </span>
-                                <span class="text-sm text-slate-400 group-hover:text-white transition-colors">Facebook</span>
-                            </a>
-                        </div>
+
+                <!-- Col 2: Contacto -->
+                <div class="footer-column space-y-4">
+                    <h4 class="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold mb-4">Escribinos</h4>
+                    <div class="space-y-1">
+                        <a href="mailto:librerialunaroja@gmail.com" class="contact-link group">
+                            <i class="far fa-envelope w-8 text-rose-600/60 group-hover:text-rose-500 transition-colors"></i>
+                            <span class="text-sm text-slate-300 group-hover:text-white transition-colors">librerialunaroja@gmail.com</span>
+                        </a>
+                        <button onclick="sendDirectWhatsApp()" class="contact-link group w-full text-left">
+                            <i class="fab fa-whatsapp w-8 text-rose-600/60 group-hover:text-rose-500 transition-colors"></i>
+                            <span class="text-sm text-slate-300 group-hover:text-white transition-colors">Chat de Consultas</span>
+                        </button>
                     </div>
-    
-                    <!-- Bloque 2: Contacto -->
-                    <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm">
-                        <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Escribinos</h4>
-                        <div class="flex flex-col space-y-3 w-fit md:w-full">
-                            <a href="mailto:librerialunaroja@gmail.com" class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
-                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all shrink-0">
-                                    <i class="far fa-envelope text-sm"></i>
-                                </span>
-                                <span class="text-sm text-slate-400 group-hover:text-white transition-colors truncate">librerialunaroja@gmail.com</span>
-                            </a>
-                            <button onclick="sendDirectWhatsApp()" 
-                                    class="flex items-center space-x-3 group hover:translate-x-1 transition-all duration-300">
-                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-green-600 group-hover:text-white transition-all shrink-0">
-                                    <i class="fab fa-whatsapp text-sm"></i>
-                                </span>
-                                <span class="text-sm text-slate-400 group-hover:text-white transition-colors">Enviar mensaje</span>
-                            </button>
+                </div>
+
+                <!-- Col 3: Ubicación -->
+                <div class="footer-column space-y-4">
+                    <h4 class="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold mb-4">Visitanos</h4>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" class="contact-link group items-start">
+                        <i class="fas fa-map-marker-alt w-8 mt-1 text-rose-600/60 group-hover:text-rose-500 transition-colors"></i>
+                        <div class="text-sm">
+                            <p class="text-slate-300 group-hover:text-white transition-colors">Charlone 608, Chacarita</p>
+                            <p class="text-[11px] text-slate-500 mt-0.5 italic">Buenos Aires, Argentina</p>
                         </div>
-                    </div>
-    
-                    <!-- Bloque 3: Ubicación -->
-                    <div class="flex flex-col items-center md:items-start space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm md:col-span-2 lg:col-span-1">
-                        <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold">Visitanos</h4>
-                        <div class="flex flex-col space-y-3 w-fit md:w-full">
-                            <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" 
-                               class="flex items-start space-x-3 group w-full">
-                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-600 group-hover:text-white transition-all shrink-0">
-                                    <i class="fas fa-map-marker-alt text-sm"></i>
-                                </span>
-                                <div class="text-sm">
-                                    <p class="text-slate-400 group-hover:text-white transition-colors leading-tight">Charlone 608, Chacarita</p>
-                                    <p class="text-[11px] text-rose-600/70 mt-1 italic group-hover:text-rose-500 transition-colors">Buenos Aires, Argentina</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
-    
+
             <div class="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[10px] text-slate-600 uppercase tracking-[0.3em]">
                 <p>© 2026 Librería Luna Roja</p>
                 <div class="flex items-center space-x-2">
@@ -405,9 +412,8 @@
         </div>
     </footer>
 
-    <!-- CART OVERLAY -->
+    <!-- CART -->
     <div id="cart-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] hidden opacity-0 transition-opacity duration-500" onclick="toggleCart()"></div>
-    
     <aside id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-md bg-[#0d0d10] z-[120] shadow-2xl flex flex-col translate-x-full transition-transform duration-500 border-l border-white/5">
         <div class="p-8 border-b border-white/5 flex justify-between items-center">
             <h2 class="text-2xl font-brand text-white tracking-widest">TU PEDIDO</h2>
@@ -441,18 +447,14 @@
         function handleImgError(img) {
             img.onerror = null;
             img.src = NO_IMAGE_URL;
+            img.classList.add('opacity-50');
         }
 
-        // LÓGICA DE PRECIOS CORREGIDA (ARG)
         function parsePrice(val) {
             if (!val) return 0;
-            // Eliminar espacios y símbolos $
             let s = val.toString().replace(/[$\s]/g, '');
-            // Eliminar TODOS los puntos (separadores de miles en ES-AR)
             s = s.replace(/\./g, '');
-            // Reemplazar la coma por punto para que JS lo entienda como decimal
             s = s.replace(',', '.');
-            
             return parseFloat(s) || 0;
         }
 
@@ -466,9 +468,19 @@
                 products = rows.map((row, index) => {
                     const parts = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     const clean = (str) => str ? str.replace(/^"|"$/g, '').trim() : "";
-                    
-                    // Columnas: 0=Nombre, 1=Desc, 2=Stock, 3=Precio, 4=Img, 5=InfoCorta, 6=CATEGORIA
                     const category = clean(parts[6]) || "Otros";
+                    
+                    // PROCESAR IMÁGENES MÚLTIPLES
+                    let imgRaw = clean(parts[4]);
+                    let imagesList = [];
+                    
+                    if (imgRaw.includes(';')) {
+                        // Separar por ; y limpiar espacios
+                        imagesList = imgRaw.split(';').map(url => url.trim()).filter(url => url !== "");
+                    } else {
+                        // Si es solo una, array de 1 elemento (o el fallback)
+                        imagesList = [imgRaw === "" ? NO_IMAGE_URL : imgRaw];
+                    }
 
                     return {
                         id: index,
@@ -476,13 +488,13 @@
                         descripcion: clean(parts[1]),
                         stock: parseInt(clean(parts[2])) || 0,
                         precio: parsePrice(clean(parts[3])),
-                        imagen: clean(parts[4]) || NO_IMAGE_URL,
+                        imagenes: imagesList, // Array de imágenes
+                        currentImageIndex: 0, // Índice actual para el carrusel
                         infoCorta: clean(parts[5]),
                         categoria: category
                     };
                 }).filter(p => p.nombre !== "");
 
-                // Categorías únicas
                 categories = ['Todos', ...new Set(products.map(p => p.categoria))];
                 renderCategories();
                 
@@ -511,7 +523,6 @@
             renderCategories();
             const filtered = products.filter(p => {
                 const matchesCat = cat === 'Todos' || p.categoria === cat;
-                // Mantener el filtro de búsqueda si hay texto escrito
                 const term = document.getElementById('search-input').value.toLowerCase();
                 const matchesSearch = p.nombre.toLowerCase().includes(term) || p.descripcion.toLowerCase().includes(term);
                 return matchesCat && matchesSearch;
@@ -529,16 +540,25 @@
 
             grid.innerHTML = items.map(p => {
                 const isOutOfStock = p.stock <= 0;
-                // Muestra la segunda descripción (Info Corta) si existe
                 const infoContent = p.infoCorta 
                     ? `<p class="text-[10px] text-rose-400 font-bold uppercase tracking-widest mb-4 bg-rose-900/10 inline-block px-2 py-1 rounded border border-rose-900/20">${p.infoCorta}</p>` 
                     : `<div class="h-6 mb-4"></div>`;
+                
+                // Lógica de flechas del carrusel
+                const hasMultipleImages = p.imagenes.length > 1;
+                const arrowsHTML = hasMultipleImages ? `
+                    <button class="carousel-btn prev" onclick="prevImage(${p.id}, event)"><i class="fas fa-chevron-left text-xs"></i></button>
+                    <button class="carousel-btn next" onclick="nextImage(${p.id}, event)"><i class="fas fa-chevron-right text-xs"></i></button>
+                ` : '';
 
                 return `
                     <div class="card-wrapper" data-id="${p.id}">
                         <div class="product-card">
                             <div class="img-container relative flex items-center justify-center">
-                                <img src="${p.imagen}" alt="${p.nombre}" class="${isOutOfStock ? 'opacity-30' : ''}" onerror="handleImgError(this)">
+                                ${arrowsHTML}
+                                <img id="img-${p.id}" src="${p.imagenes[0]}" alt="${p.nombre}" 
+                                     class="${isOutOfStock ? 'opacity-30' : ''}" 
+                                     onerror="handleImgError(this)">
                                 ${isOutOfStock ? '<span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold bg-black/60 px-4 py-2 rounded-full border border-white/10 tracking-widest text-white">AGOTADO</span>' : ''}
                             </div>
                             
@@ -563,18 +583,59 @@
             }).join('');
         }
 
+        // --- FUNCIONES DEL CARRUSEL DE IMÁGENES ---
+        function prevImage(id, event) {
+            event.stopPropagation(); // Evitar abrir/cerrar la tarjeta
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            
+            // Retroceder índice
+            product.currentImageIndex--;
+            if (product.currentImageIndex < 0) {
+                product.currentImageIndex = product.imagenes.length - 1;
+            }
+            
+            updateProductImage(product);
+        }
+
+        function nextImage(id, event) {
+            event.stopPropagation(); // Evitar abrir/cerrar la tarjeta
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            
+            // Avanzar índice
+            product.currentImageIndex++;
+            if (product.currentImageIndex >= product.imagenes.length) {
+                product.currentImageIndex = 0;
+            }
+            
+            updateProductImage(product);
+        }
+
+        function updateProductImage(product) {
+            const imgElement = document.getElementById(`img-${product.id}`);
+            if (imgElement) {
+                // Pequeño efecto de fade opcional o cambio directo
+                imgElement.src = product.imagenes[product.currentImageIndex];
+            }
+        }
+
+        // --- FUNCIONALIDAD BASE ---
+
         function initMobileCards() {
             const wrappers = document.querySelectorAll('.card-wrapper');
             wrappers.forEach(wrapper => {
                 wrapper.onclick = (e) => {
-                    if (e.target.closest('.btn-action')) return;
+                    // Si clic en botón o flechas, no hacer nada
+                    if (e.target.closest('.btn-action') || e.target.closest('.carousel-btn')) return;
+                    
                     const isActive = wrapper.classList.contains('active');
                     document.querySelectorAll('.card-wrapper.active').forEach(el => el.classList.remove('active'));
                     if (!isActive) wrapper.classList.add('active');
                 };
             });
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('.card-wrapper') && !e.target.closest('.btn-action')) {
+                if (!e.target.closest('.card-wrapper')) {
                     document.querySelectorAll('.card-wrapper.active').forEach(el => el.classList.remove('active'));
                 }
             });
@@ -584,7 +645,6 @@
             if(event) { event.stopPropagation(); event.preventDefault(); }
             const product = products.find(p => p.id === id);
             
-            // Evento GTM
             if(window.dataLayer) {
                 window.dataLayer.push({
                     'event': 'add_to_cart',
@@ -630,9 +690,12 @@
             content.innerHTML = cart.map(item => {
                 const sub = item.precio * item.quantity;
                 total += sub;
+                // Usamos la primera imagen del array para el carrito
+                const thumb = item.imagenes && item.imagenes.length > 0 ? item.imagenes[0] : item.imagen;
+                
                 return `
                     <div class="flex items-center space-x-5 border-b border-white/5 pb-4">
-                        <img src="${item.imagen}" class="w-16 h-16 object-cover rounded shadow border border-white/10" onerror="handleImgError(this)">
+                        <img src="${thumb}" class="w-16 h-16 object-cover rounded shadow border border-white/10" onerror="handleImgError(this)">
                         <div class="flex-grow">
                             <h4 class="text-sm font-bold text-white leading-tight">${item.nombre}</h4>
                             <div class="flex items-center justify-between mt-2">
