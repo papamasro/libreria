@@ -100,16 +100,15 @@
                 box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8);
                 border-color: var(--accent);
                 background: #1a1a1f;
-                z-index: 50;
             }
             .card-wrapper:hover .img-container { height: 18rem; }
-            /* Ajustamos el scale para que no corte con las flechas */
-            .card-wrapper:hover img { transform: scale(1.05); } 
+            /* Zoom un poco más pronunciado y suave */
+            .card-wrapper:hover img { transform: scale(1.1); }
             .card-wrapper:hover .desc-text {
                 -webkit-line-clamp: unset;
                 color: #e2e8f0;
             }
-            /* Mostrar flechas al hacer hover */
+            /* Mostrar flechas solo al hover */
             .card-wrapper:hover .carousel-btn { opacity: 1; }
         }
 
@@ -141,7 +140,7 @@
             background: #0c0c0e;
             border-top-left-radius: 0.9rem;
             border-top-right-radius: 0.9rem;
-            position: relative; /* Necesario para posicionar flechas */
+            position: relative;
         }
         
         .img-container img {
@@ -151,7 +150,7 @@
             object-fit: cover;
         }
 
-        /* Estilos para botones del carrusel */
+        /* Botones carrusel */
         .carousel-btn {
             position: absolute;
             top: 50%;
@@ -167,7 +166,7 @@
             justify-content: center;
             cursor: pointer;
             z-index: 20;
-            opacity: 0; /* Oculto por defecto */
+            opacity: 0; 
             transition: all 0.3s ease;
         }
         .carousel-btn:hover {
@@ -179,6 +178,7 @@
 
         .info-content {
             padding: 1.25rem;
+            background: #16161a;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
@@ -304,6 +304,7 @@
                 <button id="back-btn" onclick="clearSearch()" class="hidden bg-rose-600 hover:bg-rose-700 text-white w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-lg">
                     <i class="fas fa-arrow-left"></i>
                 </button>
+                
                 <div class="relative group flex-grow">
                     <input type="text" id="search-input" 
                            placeholder="Buscar..." 
@@ -312,13 +313,22 @@
                 </div>
             </div>
 
-            <button onclick="toggleCart()" class="relative px-8 py-3 text-white bg-rose-600 rounded-full hover:bg-rose-700 transition-all group shadow-lg flex items-center space-x-3">
-                <div class="relative">
-                    <i class="fas fa-shopping-bag text-lg"></i>
-                    <span id="cart-count" class="absolute -top-2 -right-3 bg-white text-rose-600 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border border-rose-600 shadow-sm transition-transform group-hover:scale-110">0</span>
-                </div>
-                <span class="text-xs font-bold uppercase tracking-widest hidden sm:inline">Carrito</span>
-            </button>
+            <!-- Contenedor acciones: Botón Conocenos + Carrito -->
+            <div class="flex items-center gap-3">
+                <!-- Botón Conócenos (Nuevo Diseño) -->
+                <a href="#footer" class="hidden md:flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:border-rose-500/50 hover:bg-white/10 transition-all group">
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 group-hover:text-white transition-colors">Conócenos</span>
+                    <i class="fas fa-chevron-down text-rose-500 text-xs group-hover:translate-y-0.5 transition-transform"></i>
+                </a>
+
+                <button onclick="toggleCart()" class="relative px-8 py-3 text-white bg-rose-600 rounded-full hover:bg-rose-700 transition-all group shadow-lg flex items-center space-x-3">
+                    <div class="relative">
+                        <i class="fas fa-shopping-bag text-lg"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-3 bg-white text-rose-600 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border border-rose-600 shadow-sm transition-transform group-hover:scale-110">0</span>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-widest hidden sm:inline">Carrito</span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -345,8 +355,8 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="footer-site mt-0 pt-20 pb-10 px-6 bg-[#0f1115] text-white overflow-hidden relative">
+    <!-- FOOTER con ID para el ancla -->
+    <footer id="footer" class="footer-site mt-0 pt-20 pb-10 px-6 bg-[#0f1115] text-white overflow-hidden relative">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-rose-900/50 to-transparent"></div>
         
         <div class="max-w-7xl mx-auto">
@@ -475,10 +485,8 @@
                     let imagesList = [];
                     
                     if (imgRaw.includes(';')) {
-                        // Separar por ; y limpiar espacios
                         imagesList = imgRaw.split(';').map(url => url.trim()).filter(url => url !== "");
                     } else {
-                        // Si es solo una, array de 1 elemento (o el fallback)
                         imagesList = [imgRaw === "" ? NO_IMAGE_URL : imgRaw];
                     }
 
@@ -488,8 +496,8 @@
                         descripcion: clean(parts[1]),
                         stock: parseInt(clean(parts[2])) || 0,
                         precio: parsePrice(clean(parts[3])),
-                        imagenes: imagesList, // Array de imágenes
-                        currentImageIndex: 0, // Índice actual para el carrusel
+                        imagenes: imagesList, 
+                        currentImageIndex: 0,
                         infoCorta: clean(parts[5]),
                         categoria: category
                     };
@@ -585,57 +593,40 @@
 
         // --- FUNCIONES DEL CARRUSEL DE IMÁGENES ---
         function prevImage(id, event) {
-            event.stopPropagation(); // Evitar abrir/cerrar la tarjeta
+            event.stopPropagation(); 
             const product = products.find(p => p.id === id);
             if (!product) return;
-            
-            // Retroceder índice
             product.currentImageIndex--;
-            if (product.currentImageIndex < 0) {
-                product.currentImageIndex = product.imagenes.length - 1;
-            }
-            
+            if (product.currentImageIndex < 0) product.currentImageIndex = product.imagenes.length - 1;
             updateProductImage(product);
         }
 
         function nextImage(id, event) {
-            event.stopPropagation(); // Evitar abrir/cerrar la tarjeta
+            event.stopPropagation();
             const product = products.find(p => p.id === id);
             if (!product) return;
-            
-            // Avanzar índice
             product.currentImageIndex++;
-            if (product.currentImageIndex >= product.imagenes.length) {
-                product.currentImageIndex = 0;
-            }
-            
+            if (product.currentImageIndex >= product.imagenes.length) product.currentImageIndex = 0;
             updateProductImage(product);
         }
 
         function updateProductImage(product) {
             const imgElement = document.getElementById(`img-${product.id}`);
-            if (imgElement) {
-                // Pequeño efecto de fade opcional o cambio directo
-                imgElement.src = product.imagenes[product.currentImageIndex];
-            }
+            if (imgElement) imgElement.src = product.imagenes[product.currentImageIndex];
         }
-
-        // --- FUNCIONALIDAD BASE ---
 
         function initMobileCards() {
             const wrappers = document.querySelectorAll('.card-wrapper');
             wrappers.forEach(wrapper => {
                 wrapper.onclick = (e) => {
-                    // Si clic en botón o flechas, no hacer nada
                     if (e.target.closest('.btn-action') || e.target.closest('.carousel-btn')) return;
-                    
                     const isActive = wrapper.classList.contains('active');
                     document.querySelectorAll('.card-wrapper.active').forEach(el => el.classList.remove('active'));
                     if (!isActive) wrapper.classList.add('active');
                 };
             });
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('.card-wrapper')) {
+                if (!e.target.closest('.card-wrapper') && !e.target.closest('.btn-action')) {
                     document.querySelectorAll('.card-wrapper.active').forEach(el => el.classList.remove('active'));
                 }
             });
@@ -645,6 +636,7 @@
             if(event) { event.stopPropagation(); event.preventDefault(); }
             const product = products.find(p => p.id === id);
             
+            // Evento GTM
             if(window.dataLayer) {
                 window.dataLayer.push({
                     'event': 'add_to_cart',
@@ -690,7 +682,7 @@
             content.innerHTML = cart.map(item => {
                 const sub = item.precio * item.quantity;
                 total += sub;
-                // Usamos la primera imagen del array para el carrito
+                // Thumbnail: primera imagen
                 const thumb = item.imagenes && item.imagenes.length > 0 ? item.imagenes[0] : item.imagen;
                 
                 return `
