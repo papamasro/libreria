@@ -10,7 +10,7 @@
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Librería Luna Roja | Diseño & Arte</title>
+    <title>Sublime Luna Roja | Diseño & Arte</title>
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e11d48'%3E%3Cpath d='M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-5.4-5.4 5.389 5.389 0 0 1 2.26-4.4C12.92 3.04 12.46 3 12 3z'/%3E%3C/svg%3E">
 
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
         
         :root {
             --accent: #e11d48;
@@ -45,8 +45,22 @@
         .font-brand { font-family: 'Cinzel', serif; }
         .font-serif { font-family: 'Playfair Display', serif; }
 
+        /* --- ESTILO ESPECIAL: NEGRO CON BORDE ROJO --- */
+        .text-outline-red {
+            color: black;
+            -webkit-text-stroke: 1px var(--accent);
+            text-shadow: 0 0 5px rgba(225, 29, 72, 0.3);
+            font-weight: 800; 
+        }
+        
+        .icon-outline-red {
+            color: black;
+            -webkit-text-stroke: 2px var(--accent);
+            text-shadow: 0 0 10px rgba(225, 29, 72, 0.4);
+        }
+
         .glass-nav {
-            background: rgba(10, 10, 12, 0.9);
+            background: rgba(10, 10, 12, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
@@ -62,12 +76,13 @@
             border-color: var(--accent);
         }
 
-        /* --- LÓGICA DE TARJETAS REDISEÑADA --- */
+        /* --- LÓGICA DE TARJETAS --- */
         .card-wrapper {
             position: relative;
-            height: 26rem; /* Altura fija para uniformidad */
+            height: 28rem; 
             z-index: 10;
             perspective: 1000px;
+            cursor: pointer;
         }
         
         .product-card {
@@ -83,13 +98,13 @@
             overflow: hidden;
             border-radius: 1.25rem;
             z-index: 10;
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
         }
 
         /* --- IMAGEN --- */
         .img-container {
-            height: 100%; /* La imagen ocupa todo el alto por defecto */
+            height: 100%;
             width: 100%;
             position: absolute;
             top: 0;
@@ -105,10 +120,11 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 60%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 40%, transparent 100%);
+            height: 70%;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
             z-index: 1;
             transition: opacity 0.4s ease;
+            pointer-events: none;
         }
 
         .img-container img {
@@ -127,12 +143,13 @@
             width: 100%;
             padding: 1.25rem;
             z-index: 20;
-            transform: translateY(0);
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+            pointer-events: none; 
         }
+        
+        .card-content button { pointer-events: auto; }
 
         .hidden-details {
             max-height: 0;
@@ -142,59 +159,88 @@
             transform: translateY(10px);
         }
 
-        /* --- ESTADOS INTERACTIVOS (Hover Desktop / Active Mobile) --- */
-        
-        /* Desktop Hover */
+        /* --- ESTADOS INTERACTIVOS --- */
         @media (hover: hover) {
             .card-wrapper:hover { z-index: 50; }
             .card-wrapper:hover .product-card {
                 transform: translateY(-8px) scale(1.02);
-                box-shadow: 0 30px 60px -15px rgba(225, 29, 72, 0.15), 0 0 0 1px rgba(225, 29, 72, 0.3);
+                box-shadow: 0 30px 60px -15px rgba(225, 29, 72, 0.2), 0 0 0 1px rgba(225, 29, 72, 0.3);
                 border-color: var(--accent);
             }
-            /* Zoom a la imagen más fuerte */
-            .card-wrapper:hover .img-container img { 
-                transform: scale(1.25); /* Zoom aumentado */
-            }
-            .card-wrapper:hover .img-container::after {
-                height: 100%;
-                background: linear-gradient(to top, #16161a 10%, rgba(22, 22, 26, 0.9) 40%, rgba(22, 22, 26, 0.4) 100%);
-            }
-            
-            /* Subir el contenido */
-            .card-wrapper:hover .card-content {
-                background: transparent;
-            }
-            
-            /* Mostrar detalles */
+            .card-wrapper:hover .img-container img { transform: scale(1.15); }
             .card-wrapper:hover .hidden-details {
                 max-height: 250px;
                 opacity: 1;
                 transform: translateY(0);
-                margin-top: 0.75rem;
+                margin-top: 0.5rem;
             }
         }
 
-        /* Mobile Active */
         .card-wrapper.active { z-index: 60; }
         .card-wrapper.active .product-card {
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.95);
             border-color: var(--accent);
         }
-        .card-wrapper.active .img-container img { 
-            transform: scale(1.25); 
-        }
-        .card-wrapper.active .img-container::after {
-            height: 100%;
-            background: linear-gradient(to top, #16161a 10%, rgba(22, 22, 26, 0.9) 40%, rgba(22, 22, 26, 0.4) 100%);
-        }
+        .card-wrapper.active .img-container img { transform: scale(1.15); }
         .card-wrapper.active .hidden-details {
-            max-height: 250px;
+            max-height: 300px;
             opacity: 1;
             transform: translateY(0);
-            margin-top: 0.75rem;
+            margin-top: 0.5rem;
         }
+        
+        .card-wrapper.active .img-container::after {
+             background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0.2) 80%, transparent 100%);
+             height: 80%;
+        }
+
+        /* --- ZOOM MODAL --- */
+        #zoom-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        #zoom-modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #zoom-img {
+            max-width: 95vw;
+            max-height: 95vh;
+            object-fit: contain;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 4px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        #zoom-modal.open #zoom-img { transform: scale(1); }
+        
+        .close-zoom {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            background: rgba(255,255,255,0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .close-zoom:hover { background: var(--accent); transform: rotate(90deg); }
 
         /* --- UI COMPONENTS --- */
         .nav-btn {
@@ -204,22 +250,25 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(4px);
             color: white;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 14px;
             opacity: 0;
             transition: all 0.3s;
             z-index: 30;
             border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            pointer-events: auto; 
         }
         .card-wrapper:hover .nav-btn, .card-wrapper.active .nav-btn { opacity: 1; }
+        
         .nav-btn:hover { background: var(--accent); border-color: var(--accent); }
-        .prev-btn { left: 12px; }
-        .next-btn { right: 12px; }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
 
         .btn-action {
             background: var(--accent);
@@ -272,20 +321,38 @@
             box-shadow: 0 10px 20px rgba(225, 29, 72, 0.4);
         }
         #scroll-up.show { transform: translateY(0); opacity: 1; }
+
+        /* FOOTER ESTILOS */
+        /* Eliminé la sombra difusa roja del medio */
+        .footer-site {
+            background-color: #0f1115; /* Fondo solido limpio */
+        }
+        
+        .moon-icon-glow {
+            box-shadow: 0 0 25px rgba(225, 29, 72, 0.6);
+            border: 1px solid rgba(225, 29, 72, 0.3);
+        }
     </style>
 </head>
 <body class="antialiased">
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZKLWSRX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
+    <!-- ZOOM MODAL -->
+    <div id="zoom-modal" onclick="closeZoom()">
+        <button class="close-zoom">&times;</button>
+        <img id="zoom-img" src="" alt="Zoom" onclick="event.stopPropagation()">
+    </div>
+
     <nav class="glass-nav sticky top-0 z-[100] py-4 px-6">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="flex items-center space-x-4 cursor-pointer" onclick="window.location.reload()">
-                <div class="w-10 h-10 bg-rose-600/10 rounded-full border border-rose-600/20 flex items-center justify-center">
-                    <i class="fas fa-moon text-rose-500 text-xl"></i>
+                <div class="w-12 h-12 flex items-center justify-center">
+                    <i class="fas fa-moon text-3xl icon-outline-red"></i>
                 </div>
-                <div>
-                    <h1 class="text-xl font-brand tracking-[0.2em] text-white">LIBRERÍA</h1>
-                    <p class="text-xs font-serif italic text-rose-500 -mt-1 tracking-widest">Luna Roja</p>
+                <div class="flex flex-col">
+                    <!-- Texto Sublime y Luna Roja igual de grandes y mismo estilo -->
+                    <h1 class="text-xl font-brand tracking-[0.2em] text-outline-red leading-none">SUBLIME</h1>
+                    <h1 class="text-xl font-brand tracking-[0.2em] text-outline-red leading-none mt-1">LUNA ROJA</h1>
                 </div>
             </div>
 
@@ -330,19 +397,21 @@
         <i class="fas fa-chevron-up"></i>
     </div>
 
-    <footer id="footer" class="mt-20 py-20 px-6 bg-[#0f1115] border-t border-white/5">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+    <!-- FOOTER LIMPIO -->
+    <footer id="footer" class="footer-site mt-20 py-20 px-6 border-t border-rose-900/30">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
             <div class="col-span-1 md:col-span-2">
                 <div class="flex items-center space-x-4 mb-8">
-                    <div class="w-12 h-12 bg-rose-600 flex items-center justify-center rounded-lg">
-                        <i class="fas fa-moon text-white text-2xl"></i>
+                    <!-- Icono en Footer con Glow -->
+                    <div class="w-14 h-14 flex items-center justify-center rounded-full bg-black moon-icon-glow">
+                        <i class="fas fa-moon text-3xl icon-outline-red"></i>
                     </div>
-                    <div>
-                        <h3 class="font-brand text-2xl text-white tracking-widest">LUNA ROJA</h3>
-                        <p class="text-rose-500 text-[10px] uppercase font-bold tracking-[0.4em]">Sublimación & Arte</p>
+                    <div class="flex flex-col">
+                        <h3 class="text-xl font-brand tracking-[0.2em] text-outline-red leading-none">SUBLIME</h3>
+                        <h3 class="text-xl font-brand tracking-[0.2em] text-outline-red leading-none mt-1">LUNA ROJA</h3>
                     </div>
                 </div>
-                <p class="text-slate-400 text-sm leading-relaxed max-w-md">Explora nuestra colección curada de arte, objetos únicos y diseños personalizados. Hecho con pasión en Buenos Aires.</p>
+                <p class="text-slate-400 text-sm leading-relaxed max-w-md border-l-2 border-rose-900/50 pl-4">Explora nuestra colección curada de arte, objetos únicos y diseños personalizados. Hecho con pasión en Buenos Aires.</p>
             </div>
             
             <div>
@@ -366,18 +435,18 @@
             <div>
                 <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold mb-8">Seguinos</h4>
                 <div class="flex space-x-4">
-                    <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-rose-600 hover:text-white transition-all">
+                    <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-rose-600 hover:text-white transition-all hover:scale-110 hover:shadow-[0_0_15px_rgba(225,29,72,0.5)]">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://www.facebook.com/people/Sublime-Luna-Roja/61559491830875" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-rose-600 hover:text-white transition-all">
+                    <a href="https://www.facebook.com/people/Sublime-Luna-Roja/61559491830875" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-rose-600 hover:text-white transition-all hover:scale-110 hover:shadow-[0_0_15px_rgba(225,29,72,0.5)]">
                         <i class="fab fa-facebook-f"></i>
                     </a>
                 </div>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest">© 2024 LIBRERÍA LUNA ROJA. TODOS LOS DERECHOS RESERVADOS.</p>
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest">DISEÑADO CON <i class="fas fa-heart text-rose-600 mx-1"></i> PARA EL ARTE.</p>
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest">© 2024 SUBLIME LUNA ROJA. TODOS LOS DERECHOS RESERVADOS.</p>
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest">DISEÑADO CON <i class="fas fa-heart text-rose-600 mx-1 animate-pulse"></i> PARA EL ARTE.</p>
         </div>
     </footer>
 
@@ -478,32 +547,31 @@
                 const infoBadgeHtml = p.infoCorta 
                     ? `<span class="inline-block px-3 py-1 mb-2 text-[10px] font-bold text-white bg-rose-600 rounded-full tracking-wider shadow-lg shadow-rose-600/20">${p.infoCorta}</span>` 
                     : '';
+                
+                const currentImgSrc = p.imagenes[p.currentImgIndex];
 
                 return `
                 <div class="card-wrapper group" id="wrapper-${p.id}" onclick="toggleActive(this)">
                     <div class="product-card">
                         
-                        <!-- IMAGEN (Fondo completo) -->
                         <div class="img-container">
                             ${hasMultiple ? `
                                 <button onclick="changeImage(${p.id}, -1, event)" class="nav-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
                                 <button onclick="changeImage(${p.id}, 1, event)" class="nav-btn next-btn"><i class="fas fa-chevron-right"></i></button>
                             ` : ''}
                             <img id="img-${p.id}" 
-                                 src="${p.imagenes[p.currentImgIndex]}" 
+                                 src="${currentImgSrc}" 
                                  alt="${p.nombre}" 
+                                 onclick="openZoom('${currentImgSrc}', event)"
                                  onerror="this.onerror=null; this.src='${DEFAULT_IMG}'">
                         </div>
 
-                        <!-- CONTENIDO (Sobrepuesto abajo) -->
                         <div class="card-content">
-                            <!-- Cabecera visible siempre -->
                             <div class="flex justify-between items-end mb-1">
                                 <h3 class="text-white font-bold text-base leading-tight drop-shadow-md pr-2">${p.nombre}</h3>
                                 <p class="text-white font-serif italic text-lg drop-shadow-md">$${p.precio.toLocaleString('es-AR')}</p>
                             </div>
                             
-                            <!-- Detalles ocultos que se despliegan -->
                             <div class="hidden-details">
                                 <div class="w-full h-px bg-white/20 mb-3 mt-2"></div>
                                 ${infoBadgeHtml}
@@ -529,14 +597,50 @@
             const imgElement = document.getElementById(`img-${id}`);
             if (imgElement) {
                 imgElement.src = p.imagenes[p.currentImgIndex];
+                // Actualizamos el onclick del zoom con la nueva imagen
+                imgElement.setAttribute('onclick', `openZoom('${p.imagenes[p.currentImgIndex]}', event)`);
+            }
+        }
+        
+        function openZoom(src, e) {
+            if (e) e.stopPropagation(); // Evitar que el click en la imagen active la tarjeta en mobile
+            const modal = document.getElementById('zoom-modal');
+            const img = document.getElementById('zoom-img');
+            img.src = src;
+            modal.classList.add('open');
+        }
+        function closeZoom() {
+            document.getElementById('zoom-modal').classList.remove('open');
+        }
+
+        // LÓGICA DE TOGGLE PARA MOBILE MEJORADA
+        function toggleActive(el) {
+            // Verificar si la tarjeta que toqué YA estaba activa
+            const wasActive = el.classList.contains('active');
+            
+            // Primero cierro TODAS las tarjetas activas
+            document.querySelectorAll('.card-wrapper.active').forEach(c => c.classList.remove('active'));
+            
+            // Si la que toqué NO estaba activa, la abro.
+            // Si SÍ estaba activa, como ya cerré todas arriba, se queda cerrada. (Efecto toggle)
+            if (!wasActive) {
+                el.classList.add('active');
             }
         }
 
-        function toggleActive(el) {
-            const wasActive = el.classList.contains('active');
-            document.querySelectorAll('.card-wrapper.active').forEach(c => c.classList.remove('active'));
-            if (!wasActive) el.classList.add('active');
-        }
+        // CERRAR AL HACER CLICK AFUERA (Lógica global)
+        document.addEventListener('click', (e) => {
+            // Si el click NO fue en una tarjeta ni en sus hijos...
+            if (!e.target.closest('.card-wrapper')) {
+                // Cierro todas las tarjetas
+                document.querySelectorAll('.card-wrapper.active').forEach(c => c.classList.remove('active'));
+            }
+
+            // También cerrar sugerencias de búsqueda
+            if (!e.target.closest('#search-input')) {
+                document.getElementById('search-suggestions').style.display = 'none';
+            }
+        });
 
         function performSearch() {
             const term = document.getElementById('search-input').value.toLowerCase().trim();
@@ -653,11 +757,10 @@
             const btn = document.getElementById('scroll-up');
             if (window.scrollY > 500) btn.classList.add('show'); else btn.classList.remove('show');
         };
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('#search-input')) {
-                document.getElementById('search-suggestions').style.display = 'none';
-            }
+        
+        // Cerrar modal con tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeZoom();
         });
     </script>
 </body>
