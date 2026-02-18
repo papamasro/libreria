@@ -30,6 +30,10 @@
             --text-dim: #94a3b8;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body { 
             font-family: 'Inter', sans-serif; 
             background-color: var(--bg-deep); 
@@ -71,76 +75,77 @@
             cursor: pointer;
         }
         
-.product-card {
-    background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 1rem;
-    transform-origin: center;
-    z-index: 10;
-    will-change: transform;
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 1rem;
+            transform-origin: center;
+            z-index: 10;
+            will-change: transform;
 
-    transition:
-        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.35s ease,
-        border-color 0.3s ease,
-        background 0.3s ease;
-}
+            /* Transición más fluida y elástica */
+            transition:
+                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.4s ease,
+                border-color 0.3s ease,
+                background 0.3s ease;
+        }
 
 
        /* --- HOVER DESKTOP MEJORADO --- */
-@media (hover: hover) and (pointer: fine) {
+        @media (hover: hover) and (pointer: fine) {
 
-    .card-wrapper {
-        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+            .card-wrapper {
+                transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            }
 
-    .card-wrapper:hover {
-        z-index: 50;
-        transform: translateY(-12px);
-    }
+            .card-wrapper:hover {
+                z-index: 50;
+                transform: translateY(-12px);
+            }
 
-    .card-wrapper:hover .product-card {
-        transform: scale(1.06);
-        box-shadow: 0 35px 80px -20px rgba(0, 0, 0, 0.85);
-        border-color: var(--accent);
-        background: #1a1a1f;
-    }
+            .card-wrapper:hover .product-card {
+                transform: scale(1.06);
+                box-shadow: 0 35px 80px -20px rgba(0, 0, 0, 0.85);
+                border-color: var(--accent);
+                background: #1a1a1f;
+            }
 
-    .card-wrapper:hover .img-container {
-        height: 18rem;
-    }
+            .card-wrapper:hover .img-container {
+                height: 18rem;
+            }
 
-    /* Zoom más elegante */
-    .card-wrapper:hover img {
-        transform: scale(1.15);
-    }
+            /* Zoom EXTREMO en Hover para ver detalles */
+            .card-wrapper:hover img {
+                transform: scale(1.5); /* 50% de zoom al pasar el mouse */
+            }
 
-    .card-wrapper:hover .desc-text {
-        -webkit-line-clamp: unset;
-        color: #e2e8f0;
-    }
+            .card-wrapper:hover .desc-text {
+                -webkit-line-clamp: unset;
+                color: #e2e8f0;
+            }
 
-    .card-wrapper:hover .carousel-btn {
-        opacity: 1;
-    }
-}
+            .card-wrapper:hover .carousel-btn {
+                opacity: 1;
+            }
+        }
 
 
-        /* --- ACTIVE MOBILE --- */
+        /* --- ACTIVE MOBILE (Fluido) --- */
         .card-wrapper.active { z-index: 50; }
         .card-wrapper.active .product-card {
             height: auto;
             min-height: 100%;
-            width: 102%; 
-            left: -1%;   
+            width: 104%; /* Un poco más ancho para efecto pop */
+            left: -2%;   
             transform: translateY(-5px); 
             box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.95);
             border-color: var(--accent);
@@ -148,7 +153,7 @@
             z-index: 50;
         }
         .card-wrapper.active .img-container { height: 21rem; }
-        .card-wrapper.active img { transform: scale(1.05); }
+        .card-wrapper.active img { transform: scale(1.2); } /* Zoom moderado en mobile active */
         .card-wrapper.active .desc-text {
             -webkit-line-clamp: unset;
             color: #e2e8f0;
@@ -157,7 +162,7 @@
 
         .img-container {
             height: 14rem; 
-            transition: height 0.3s ease;
+            transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             overflow: hidden;
             background: #0c0c0e;
             border-top-left-radius: 0.9rem;
@@ -166,10 +171,13 @@
         }
         
         .img-container img {
-            transition: transform 0.5s ease;
+            /* Transición suave para el zoom */
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             width: 100%;
             height: 100%;
             object-fit: cover;
+            /* Zoom por defecto para eliminar bordes blancos y agrandar la prenda */
+            transform: scale(1.15); 
         }
 
         /* Botones carrusel */
@@ -302,6 +310,37 @@
         .animate-pulse-slow {
             animation: pulse-slow 4s infinite ease-in-out;
         }
+
+        /* Botón Scroll Up */
+        #scroll-up-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(225, 29, 72, 0.9);
+            color: white;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 90;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateY(100px); /* Oculto por defecto */
+            opacity: 0;
+        }
+        #scroll-up-btn.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        #scroll-up-btn:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -377,6 +416,11 @@
         </div>
     </main>
 
+    <!-- BOTÓN IR ARRIBA -->
+    <button id="scroll-up-btn" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- FOOTER con ID para el ancla -->
     <footer id="footer" class="footer-site mt-0 pt-20 pb-10 px-6 bg-[#0f1115] text-white overflow-hidden relative">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-rose-900/50 to-transparent"></div>
@@ -391,7 +435,7 @@
                         <span class="font-brand text-xl tracking-[0.1em] text-white">LUNA ROJA</span>
                     </div>
                     <p class="text-slate-400 text-sm leading-relaxed font-light">
-                        Explora nuestra cuidada selección de arte, objetos únicos y encuadernación artesanal.
+                        Explora nuestra cuidada selección de arte, objetos únicos y remeras artesanales.
                     </p>
                     <div class="flex flex-wrap gap-3">
                         <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="social-pill">
@@ -474,7 +518,10 @@
         let currentCategory = 'Todos';
         let cart = JSON.parse(localStorage.getItem('luna_roja_cart_final')) || [];
 
-        window.onload = loadStock;
+        window.onload = () => {
+            loadStock();
+            initScrollTop();
+        };
 
         function handleImgError(img) {
             img.onerror = null;
@@ -772,8 +819,25 @@
             displayProducts(filtered);
             initMobileCards(); 
         });
+
+        // --- SCROLL TO TOP LOGIC ---
+        function initScrollTop() {
+            const btn = document.getElementById('scroll-up-btn');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
     </script>
 </body>
 </html>
-
-
