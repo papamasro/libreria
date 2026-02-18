@@ -12,7 +12,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Librería Luna Roja | Diseño & Arte</title>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e11d48'%3E%3Cpath d='M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-5.4-5.4 5.389 5.389 0 0 1 2.26-4.4C12.92 3.04 12.46 3 12 3z'/%3E%3C/svg%3E">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -30,9 +29,7 @@
             --text-dim: #94a3b8;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body { 
             font-family: 'Inter', sans-serif; 
@@ -41,7 +38,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            letter-spacing: -0.01em;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
         }
@@ -50,7 +46,7 @@
         .font-serif { font-family: 'Playfair Display', serif; }
 
         .glass-nav {
-            background: rgba(10, 10, 12, 0.85);
+            background: rgba(10, 10, 12, 0.9);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
@@ -67,12 +63,11 @@
             border-color: var(--accent);
         }
 
-        /* --- LÓGICA DE TARJETAS --- */
+        /* --- CARDS --- */
         .card-wrapper {
             position: relative;
             height: 28rem;
             z-index: 10;
-            cursor: pointer;
         }
         
         .product-card {
@@ -87,273 +82,106 @@
             flex-direction: column;
             overflow: hidden;
             border-radius: 1rem;
-            transform-origin: center;
             z-index: 10;
-            will-change: transform;
-
-            /* Transición más fluida y elástica */
-            transition:
-                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                box-shadow 0.4s ease,
-                border-color 0.3s ease,
-                background 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease, border-color 0.3s ease;
         }
 
-
-       /* --- HOVER DESKTOP MEJORADO --- */
-        @media (hover: hover) and (pointer: fine) {
-
-            .card-wrapper {
-                transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            }
-
-            .card-wrapper:hover {
-                z-index: 50;
-                transform: translateY(-12px);
-            }
-
+        @media (hover: hover) {
+            .card-wrapper:hover { z-index: 50; }
             .card-wrapper:hover .product-card {
-                transform: scale(1.06);
+                transform: translateY(-12px) scale(1.05);
                 box-shadow: 0 35px 80px -20px rgba(0, 0, 0, 0.85);
                 border-color: var(--accent);
                 background: #1a1a1f;
             }
-
-            .card-wrapper:hover .img-container {
-                height: 18rem;
-            }
-
-            /* Zoom EXTREMO en Hover para ver detalles */
-            .card-wrapper:hover img {
-                transform: scale(1.5); /* 50% de zoom al pasar el mouse */
-            }
-
-            .card-wrapper:hover .desc-text {
-                -webkit-line-clamp: unset;
-                color: #e2e8f0;
-            }
-
-            .card-wrapper:hover .carousel-btn {
-                opacity: 1;
-            }
+            .card-wrapper:hover img { transform: scale(1.5); }
         }
 
-
-        /* --- ACTIVE MOBILE (Fluido) --- */
-        .card-wrapper.active { z-index: 50; }
+        /* --- CLICK / ACTIVE ZOOM 1.3 --- */
+        .card-wrapper.active { z-index: 60; }
         .card-wrapper.active .product-card {
             height: auto;
             min-height: 100%;
-            width: 104%; /* Un poco más ancho para efecto pop */
-            left: -2%;   
-            transform: translateY(-5px); 
-            box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.95);
+            transform: translateY(-5px);
             border-color: var(--accent);
-            background: #1a1a1f;
-            z-index: 50;
+            box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.95);
         }
-        .card-wrapper.active .img-container { height: 21rem; }
-        .card-wrapper.active img { transform: scale(1.2); } /* Zoom moderado en mobile active */
-        .card-wrapper.active .desc-text {
-            -webkit-line-clamp: unset;
-            color: #e2e8f0;
-        }
-        .card-wrapper.active .carousel-btn { opacity: 1; }
+        .card-wrapper.active img { transform: scale(1.3) !important; }
+        .card-wrapper.active .img-container { height: 18rem; }
 
         .img-container {
             height: 14rem; 
-            transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: height 0.4s ease;
             overflow: hidden;
             background: #0c0c0e;
-            border-top-left-radius: 0.9rem;
-            border-top-right-radius: 0.9rem;
             position: relative;
         }
         
         .img-container img {
-            /* Transición suave para el zoom */
             transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Zoom por defecto para eliminar bordes blancos y agrandar la prenda */
             transform: scale(1.15); 
         }
 
-        /* Botones carrusel */
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.6);
+        /* Sugerencias de búsqueda */
+        #search-suggestions {
+            background: #16161a;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        .suggestion-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        .suggestion-item:hover {
+            background: rgba(225, 29, 72, 0.1);
+            color: var(--accent);
+        }
+
+        /* Botón Ir Arriba */
+        #scroll-up {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent);
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 3rem;
+            height: 3rem;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 20;
-            opacity: 0; 
-            transition: all 0.3s ease;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 80;
         }
-        .carousel-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-        .carousel-btn.prev { left: 10px; }
-        .carousel-btn.next { right: 10px; }
-
-        .info-content {
-            padding: 1.25rem;
-            background: #16161a;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .desc-text {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;  
-            overflow: hidden;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            transition: color 0.3s ease;
-        }
+        #scroll-up.show { transform: translateY(0); opacity: 1; }
 
         .btn-action {
             background: linear-gradient(to right, #e11d48, #be123c);
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
-        .btn-action:hover:not(:disabled) {
-            filter: brightness(1.2);
-            box-shadow: 0 0 20px rgba(225, 29, 72, 0.4);
-        }
-
-        .loader-ring {
-            width: 50px; height: 50px;
-            border: 2px solid rgba(225, 29, 72, 0.1);
-            border-radius: 50%;
-            border-top-color: var(--accent);
-            animation: spin 0.8s ease-in-out infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-deep); }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-
-        .footer-site {
-            background: radial-gradient(circle at top, #0f0f13 0%, #060608 100%);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .contact-link {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem;
-            border-radius: 0.75rem;
-            background: transparent;
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .contact-link:hover {
-            background: rgba(225, 29, 72, 0.03);
-            border-color: rgba(225, 29, 72, 0.1);
-            color: var(--accent);
-        }
-
-        .social-pill {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-pill:hover {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.2);
-        }
-
-        .cart-item-img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 0.75rem;
-            background: #16161a;
-        }
-        
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-        @keyframes pulse-slow {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
-        }
-        .animate-pulse-slow {
-            animation: pulse-slow 4s infinite ease-in-out;
-        }
-
-        /* Botón Scroll Up */
-        #scroll-up-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: rgba(225, 29, 72, 0.9);
-            color: white;
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            z-index: 90;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform: translateY(100px); /* Oculto por defecto */
-            opacity: 0;
-        }
-        #scroll-up-btn.visible {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        #scroll-up-btn:hover {
-            background: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4);
         }
     </style>
 </head>
 <body class="antialiased">
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZKLWSRX"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZKLWSRX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
-    <!-- Navegación -->
     <nav class="glass-nav sticky top-0 z-[100] py-4 px-6">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="flex items-center space-x-4 cursor-pointer" onclick="window.location.reload()">
-                <div class="relative flex items-center justify-center w-10 h-10 bg-rose-600/10 rounded-full border border-rose-600/20">
-                    <i class="fas fa-moon text-rose-500 text-xl rotate-[-15deg]"></i>
+                <div class="w-10 h-10 bg-rose-600/10 rounded-full border border-rose-600/20 flex items-center justify-center">
+                    <i class="fas fa-moon text-rose-500 text-xl"></i>
                 </div>
                 <div>
                     <h1 class="text-xl font-brand tracking-[0.2em] text-white">LIBRERÍA</h1>
@@ -361,148 +189,84 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3 w-full md:max-w-md">
-                <button id="back-btn" onclick="clearSearch()" class="hidden bg-rose-600 hover:bg-rose-700 text-white w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-lg">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-                
-                <div class="relative group flex-grow">
-                    <input type="text" id="search-input" 
-                           placeholder="Buscar..." 
-                           class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-12 text-sm focus:outline-none focus:border-rose-500 focus:bg-white/10 transition-all placeholder:text-slate-600 text-white">
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-rose-500 transition-colors"></i>
-                </div>
-            </div>
-
-            <!-- Contenedor acciones: Botón Conocenos + Carrito -->
-            <div class="flex items-center gap-3">
-                <!-- Botón Conócenos (Nuevo Diseño) -->
-                <a href="#footer" class="hidden md:flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:border-rose-500/50 hover:bg-white/10 transition-all group">
-                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 group-hover:text-white transition-colors">Conócenos</span>
-                    <i class="fas fa-chevron-down text-rose-500 text-xs group-hover:translate-y-0.5 transition-transform"></i>
-                </a>
-
-                <button onclick="toggleCart()" class="relative px-8 py-3 text-white bg-rose-600 rounded-full hover:bg-rose-700 transition-all group shadow-lg flex items-center space-x-3">
-                    <div class="relative">
-                        <i class="fas fa-shopping-bag text-lg"></i>
-                        <span id="cart-count" class="absolute -top-2 -right-3 bg-white text-rose-600 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border border-rose-600 shadow-sm transition-transform group-hover:scale-110">0</span>
+            <div class="relative w-full md:max-w-md">
+                <div class="flex items-center gap-3">
+                    <button id="back-btn" onclick="clearSearch()" class="hidden bg-rose-600 text-white w-10 h-10 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="relative flex-grow">
+                        <input type="text" id="search-input" autocomplete="off"
+                               placeholder="Buscar remeras, plantas, anime..." 
+                               class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-12 text-sm focus:outline-none focus:border-rose-500 text-white">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
                     </div>
-                    <span class="text-xs font-bold uppercase tracking-widest hidden sm:inline">Carrito</span>
-                </button>
+                </div>
+                <!-- Sugerencias -->
+                <div id="search-suggestions" class="absolute top-full left-0 right-0 mt-2 z-[110]"></div>
             </div>
+
+            <button onclick="toggleCart()" class="relative px-8 py-3 text-white bg-rose-600 rounded-full flex items-center space-x-3 shadow-lg">
+                <i class="fas fa-shopping-bag"></i>
+                <span id="cart-count" class="bg-white text-rose-600 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                <span class="text-xs font-bold uppercase tracking-widest hidden sm:inline">Carrito</span>
+            </button>
         </div>
     </nav>
 
-    <!-- Contenido -->
     <main class="max-w-7xl mx-auto px-6 py-12 flex-grow w-full">
-        <!-- Header con Categorías -->
         <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-                <h2 class="text-3xl font-brand text-white mb-2">Nuestra Colección</h2>
-                <div class="w-12 h-1 bg-rose-600"></div>
-            </div>
-            
-            <!-- Filtros -->
-            <div id="category-filters" class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide w-full md:w-auto"></div>
+            <h2 class="text-3xl font-brand text-white">Nuestra Colección</h2>
+            <div id="category-filters" class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide"></div>
         </div>
 
         <div id="loading-state" class="flex flex-col items-center justify-center py-20">
-            <div class="loader-ring mb-4"></div>
-            <span class="text-xs uppercase tracking-[0.4em] text-slate-500 font-bold">Invocando catálogo</span>
+            <div class="w-12 h-12 border-4 border-rose-600/20 border-t-rose-600 rounded-full animate-spin mb-4"></div>
+            <span class="text-xs uppercase tracking-[0.4em] text-slate-500 font-bold">Cargando catálogo</span>
         </div>
 
-        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 pb-12">
-            <!-- Items JS -->
-        </div>
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 pb-12"></div>
     </main>
 
-    <!-- BOTÓN IR ARRIBA -->
-    <button id="scroll-up-btn" onclick="scrollToTop()">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+    <div id="scroll-up" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <i class="fas fa-chevron-up"></i>
+    </div>
 
-    <!-- FOOTER con ID para el ancla -->
-    <footer id="footer" class="footer-site mt-0 pt-20 pb-10 px-6 bg-[#0f1115] text-white overflow-hidden relative">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-rose-900/50 to-transparent"></div>
-        
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16">
-                
-                <!-- Col 1: Redes -->
-                <div class="footer-column space-y-6">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-moon text-rose-600 text-xl"></i>
-                        <span class="font-brand text-xl tracking-[0.1em] text-white">LUNA ROJA</span>
-                    </div>
-                    <p class="text-slate-400 text-sm leading-relaxed font-light">
-                        Explora nuestra cuidada selección de arte, objetos únicos y remeras artesanales.
-                    </p>
-                    <div class="flex flex-wrap gap-3">
-                        <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="social-pill">
-                            <i class="fab fa-instagram"></i> Instagram
-                        </a>
-                        <a href="https://www.facebook.com/people/Sublime-Luna-Roja/61559491830875" target="_blank" class="social-pill">
-                            <i class="fab fa-facebook-f"></i> Facebook
-                        </a>
-                        <button onclick="sendDirectWhatsApp()" class="social-pill">
-                            <i class="fab fa-whatsapp"></i> WhatsApp
-                        </button>
-                    </div>
+    <footer id="footer" class="mt-20 pt-20 pb-10 px-6 bg-[#0f1115] border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+                <div class="flex items-center space-x-3 mb-6">
+                    <i class="fas fa-moon text-rose-600 text-xl"></i>
+                    <span class="font-brand text-xl text-white">LUNA ROJA</span>
                 </div>
-
-                <!-- Col 2: Contacto -->
-                <div class="footer-column space-y-4">
-                    <h4 class="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold mb-4">Escribinos</h4>
-                    <div class="space-y-1">
-                        <a href="mailto:librerialunaroja@gmail.com" class="contact-link group">
-                            <i class="far fa-envelope w-8 text-rose-600/60 group-hover:text-rose-500 transition-colors"></i>
-                            <span class="text-sm text-slate-300 group-hover:text-white transition-colors">librerialunaroja@gmail.com</span>
-                        </a>
-                        <button onclick="sendDirectWhatsApp()" class="contact-link group w-full text-left">
-                            <i class="fab fa-whatsapp w-8 text-rose-600/60 group-hover:text-rose-500 transition-colors"></i>
-                            <span class="text-sm text-slate-300 group-hover:text-white transition-colors">Chat de Consultas</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Col 3: Ubicación -->
-                <div class="footer-column space-y-4">
-                    <h4 class="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold mb-4">Visitanos</h4>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" class="contact-link group items-start">
-                        <i class="fas fa-map-marker-alt w-8 mt-1 text-rose-600/60 group-hover:text-rose-500 transition-colors"></i>
-                        <div class="text-sm">
-                            <p class="text-slate-300 group-hover:text-white transition-colors">Charlone 608, Chacarita</p>
-                            <p class="text-[11px] text-slate-500 mt-0.5 italic">Buenos Aires, Argentina</p>
-                        </div>
-                    </a>
-                </div>
+                <p class="text-slate-400 text-sm leading-relaxed">Explora nuestra cuidada selección de arte, objetos únicos y remeras artesanales.</p>
             </div>
-
-            <div class="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[10px] text-slate-600 uppercase tracking-[0.3em]">
-                <p>© 2026 Librería Luna Roja</p>
-                <div class="flex items-center space-x-2">
-                    <span class="w-8 h-[1px] bg-white/10"></span>
-                    <p>Hecho a mano en Argentina</p>
-                </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold mb-6">Contacto</h4>
+                <p class="text-sm text-slate-300 mb-2">librerialunaroja@gmail.com</p>
+                <p class="text-sm text-slate-300">Charlone 608, Chacarita</p>
+            </div>
+            <div class="flex gap-4">
+                <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="text-2xl text-slate-500 hover:text-rose-500"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/people/Sublime-Luna-Roja/61559491830875" target="_blank" class="text-2xl text-slate-500 hover:text-rose-500"><i class="fab fa-facebook"></i></a>
             </div>
         </div>
     </footer>
 
     <!-- CART -->
-    <div id="cart-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] hidden opacity-0 transition-opacity duration-500" onclick="toggleCart()"></div>
-    <aside id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-md bg-[#0d0d10] z-[120] shadow-2xl flex flex-col translate-x-full transition-transform duration-500 border-l border-white/5">
+    <div id="cart-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] hidden" onclick="toggleCart()"></div>
+    <aside id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-md bg-[#0d0d10] z-[120] translate-x-full transition-transform duration-500 border-l border-white/5 flex flex-col">
         <div class="p-8 border-b border-white/5 flex justify-between items-center">
-            <h2 class="text-2xl font-brand text-white tracking-widest">TU PEDIDO</h2>
-            <button onclick="toggleCart()" class="text-slate-500 hover:text-rose-500 transition-colors text-3xl">&times;</button>
+            <h2 class="text-2xl font-brand text-white">TU PEDIDO</h2>
+            <button onclick="toggleCart()" class="text-slate-500 text-3xl">&times;</button>
         </div>
-        <div id="cart-content" class="flex-grow overflow-y-auto p-8 space-y-8"></div>
-        <div class="p-8 bg-black/40 border-t border-white/5">
+        <div id="cart-content" class="flex-grow overflow-y-auto p-8 space-y-6"></div>
+        <div class="p-8 border-t border-white/5">
             <div class="flex justify-between items-end mb-8">
-                <span class="text-slate-500 text-sm uppercase tracking-widest">Subtotal</span>
+                <span class="text-slate-500 text-xs uppercase tracking-widest">Total</span>
                 <span id="cart-total" class="text-3xl font-bold text-rose-500">$ 0,00</span>
             </div>
-            <button onclick="sendToWhatsApp()" class="btn-action text-white py-5 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg">
-                <i class="fab fa-whatsapp text-xl mr-3"></i> Finalizar Compra
+            <button onclick="sendToWhatsApp()" class="btn-action w-full py-5 rounded-xl text-white font-bold uppercase tracking-widest text-sm">
+                <i class="fab fa-whatsapp mr-2"></i> Finalizar Compra
             </button>
         </div>
     </aside>
@@ -511,85 +275,61 @@
         const WHATSAPP_PHONE = "5491144460693"; 
         const SHEET_ID = "11s7m68TJhweA-lNP0QSVSfXDV8wRBNHbRT0ubremuuM";
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
-        const NO_IMAGE_URL = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%2316161a'/%3E%3Ctext x='50%25' y='50%25' font-family='Inter' font-size='12' fill='%23444' text-anchor='middle'%3EMOON ART%3C/text%3E%3C/svg%3E`;
-
+        
         let products = [];
         let categories = [];
         let currentCategory = 'Todos';
-        let cart = JSON.parse(localStorage.getItem('luna_roja_cart_final')) || [];
+        let cart = JSON.parse(localStorage.getItem('luna_roja_cart_v2')) || [];
 
-        window.onload = () => {
-            loadStock();
-            initScrollTop();
-        };
-
-        function handleImgError(img) {
-            img.onerror = null;
-            img.src = NO_IMAGE_URL;
-            img.classList.add('opacity-50');
-        }
-
-        function parsePrice(val) {
-            if (!val) return 0;
-            let s = val.toString().replace(/[$\s]/g, '');
-            s = s.replace(/\./g, '');
-            s = s.replace(',', '.');
-            return parseFloat(s) || 0;
-        }
+        window.onload = loadStock;
 
         async function loadStock() {
             try {
                 const response = await fetch(CSV_URL);
-                if (!response.ok) throw new Error("Fallo fetch");
                 const data = await response.text();
                 const rows = data.split('\n').slice(1);
                 
                 products = rows.map((row, index) => {
                     const parts = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     const clean = (str) => str ? str.replace(/^"|"$/g, '').trim() : "";
-                    const category = clean(parts[6]) || "Otros";
                     
-                    // PROCESAR IMÁGENES MÚLTIPLES
+                    // Imágenes múltiples
                     let imgRaw = clean(parts[4]);
-                    let imagesList = [];
+                    let images = imgRaw.includes(';') ? imgRaw.split(';').map(u => u.trim()) : [imgRaw || ""];
                     
-                    if (imgRaw.includes(';')) {
-                        imagesList = imgRaw.split(';').map(url => url.trim()).filter(url => url !== "");
-                    } else {
-                        imagesList = [imgRaw === "" ? NO_IMAGE_URL : imgRaw];
-                    }
+                    // Subcategorías (Columna 7 del Excel)
+                    let subRaw = clean(parts[7]); 
+                    let subCategories = subRaw ? subRaw.split(';').map(s => s.trim().toLowerCase()) : [];
 
                     return {
                         id: index,
                         nombre: clean(parts[0]),
                         descripcion: clean(parts[1]),
                         stock: parseInt(clean(parts[2])) || 0,
-                        precio: parsePrice(clean(parts[3])),
-                        imagenes: imagesList, 
-                        currentImageIndex: 0,
+                        precio: parseFloat(clean(parts[3]).replace(/[^0-9,.]/g, '').replace(',', '.')) || 0,
+                        imagenes: images,
+                        currentImg: 0,
                         infoCorta: clean(parts[5]),
-                        categoria: category
+                        categoria: clean(parts[6]) || "Otros",
+                        tags: subCategories
                     };
                 }).filter(p => p.nombre !== "");
 
                 categories = ['Todos', ...new Set(products.map(p => p.categoria))];
                 renderCategories();
-                
                 displayProducts(products);
                 document.getElementById('loading-state').style.display = 'none';
-                updateUI();
-                initMobileCards(); 
+                updateCartUI();
             } catch (err) {
-                console.error("Error:", err);
-                document.getElementById('loading-state').innerHTML = `<p class="text-rose-500">Error al conectar con el catálogo</p>`;
+                console.error(err);
+                document.getElementById('loading-state').innerHTML = `<p class="text-rose-500">Error cargando catálogo.</p>`;
             }
         }
 
         function renderCategories() {
             const container = document.getElementById('category-filters');
             container.innerHTML = categories.map(cat => `
-                <button onclick="filterByCategory('${cat}')" 
-                        class="category-pill px-5 py-2 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest transition-all ${currentCategory === cat ? 'active' : 'text-slate-500 hover:text-white hover:bg-white/5'}">
+                <button onclick="filterByCategory('${cat}')" class="category-pill px-5 py-2 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest ${currentCategory === cat ? 'active' : 'text-slate-500'}">
                     ${cat}
                 </button>
             `).join('');
@@ -598,246 +338,157 @@
         function filterByCategory(cat) {
             currentCategory = cat;
             renderCategories();
-            const filtered = products.filter(p => {
-                const matchesCat = cat === 'Todos' || p.categoria === cat;
-                const term = document.getElementById('search-input').value.toLowerCase();
-                const matchesSearch = p.nombre.toLowerCase().includes(term) || p.descripcion.toLowerCase().includes(term);
-                return matchesCat && matchesSearch;
-            });
-            displayProducts(filtered);
-            initMobileCards();
+            performSearch();
         }
 
         function displayProducts(items) {
             const grid = document.getElementById('products-grid');
-            if (items.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-20 text-center text-slate-500 uppercase tracking-widest text-xs">No se encontraron productos</div>`;
-                return;
-            }
-
-            grid.innerHTML = items.map(p => {
-                const isOutOfStock = p.stock <= 0;
-                const infoContent = p.infoCorta 
-                    ? `<p class="text-[10px] text-rose-400 font-bold uppercase tracking-widest mb-4 bg-rose-900/10 inline-block px-2 py-1 rounded border border-rose-900/20">${p.infoCorta}</p>` 
-                    : `<div class="h-6 mb-4"></div>`;
-                
-                // Lógica de flechas del carrusel
-                const hasMultipleImages = p.imagenes.length > 1;
-                const arrowsHTML = hasMultipleImages ? `
-                    <button class="carousel-btn prev" onclick="prevImage(${p.id}, event)"><i class="fas fa-chevron-left text-xs"></i></button>
-                    <button class="carousel-btn next" onclick="nextImage(${p.id}, event)"><i class="fas fa-chevron-right text-xs"></i></button>
-                ` : '';
-
-                return `
-                    <div class="card-wrapper" data-id="${p.id}">
-                        <div class="product-card">
-                            <div class="img-container relative flex items-center justify-center">
-                                ${arrowsHTML}
-                                <img id="img-${p.id}" src="${p.imagenes[0]}" alt="${p.nombre}" 
-                                     class="${isOutOfStock ? 'opacity-30' : ''}" 
-                                     onerror="handleImgError(this)">
-                                ${isOutOfStock ? '<span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold bg-black/60 px-4 py-2 rounded-full border border-white/10 tracking-widest text-white">AGOTADO</span>' : ''}
-                            </div>
-                            
-                            <div class="info-content">
-                                <h3 class="font-semibold text-white mb-2 text-sm">${p.nombre}</h3>
-                                <p class="desc-text leading-relaxed mb-4 flex-grow">${p.descripcion}</p>
-                                
-                                <div class="mt-auto">
-                                    ${infoContent}
-                                    <div class="flex items-center justify-between mb-4">
-                                        <span class="font-bold text-white text-lg">$ ${p.precio.toLocaleString('es-AR')}</span>
-                                    </div>
-                                    <button onclick="addToCart(${p.id}, this, event)" ${isOutOfStock ? 'disabled' : ''} 
-                                            class="btn-action py-3 rounded-lg text-white font-bold text-xs uppercase tracking-widest disabled:opacity-30">
-                                        <i class="fas fa-plus-circle mr-2"></i> <span>Agregar</span>
-                                    </button>
-                                </div>
+            grid.innerHTML = items.map(p => `
+                <div class="card-wrapper" onclick="toggleActive(this)">
+                    <div class="product-card">
+                        <div class="img-container">
+                            <img id="img-${p.id}" src="${p.imagenes[0]}" alt="${p.nombre}" onerror="this.src='https://placehold.co/400x500/16161a/white?text=Luna+Roja'">
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow">
+                            <h3 class="text-white font-bold text-sm mb-2">${p.nombre}</h3>
+                            <p class="text-[10px] text-slate-500 line-clamp-2 mb-4">${p.descripcion}</p>
+                            <div class="mt-auto">
+                                <p class="text-rose-500 font-bold text-lg mb-4">$ ${p.precio.toLocaleString('es-AR')}</p>
+                                <button onclick="addToCart(${p.id}, event)" ${p.stock <= 0 ? 'disabled' : ''} class="btn-action w-full py-3 rounded-lg text-white font-bold text-[10px] uppercase tracking-tighter">
+                                    ${p.stock <= 0 ? 'Sin Stock' : 'Agregar al Carrito'}
+                                </button>
                             </div>
                         </div>
                     </div>
-                `;
-            }).join('');
+                </div>
+            `).join('');
         }
 
-        // --- FUNCIONES DEL CARRUSEL DE IMÁGENES ---
-        function prevImage(id, event) {
-            event.stopPropagation(); 
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-            product.currentImageIndex--;
-            if (product.currentImageIndex < 0) product.currentImageIndex = product.imagenes.length - 1;
-            updateProductImage(product);
+        function toggleActive(el) {
+            const wasActive = el.classList.contains('active');
+            document.querySelectorAll('.card-wrapper.active').forEach(c => c.classList.remove('active'));
+            if (!wasActive) el.classList.add('active');
         }
 
-        function nextImage(id, event) {
-            event.stopPropagation();
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-            product.currentImageIndex++;
-            if (product.currentImageIndex >= product.imagenes.length) product.currentImageIndex = 0;
-            updateProductImage(product);
-        }
-
-        function updateProductImage(product) {
-            const imgElement = document.getElementById(`img-${product.id}`);
-            if (imgElement) imgElement.src = product.imagenes[product.currentImageIndex];
-        }
-
-        function initMobileCards() {
-            const wrappers = document.querySelectorAll('.card-wrapper');
-            wrappers.forEach(wrapper => {
-                wrapper.onclick = (e) => {
-                    if (e.target.closest('.btn-action') || e.target.closest('.carousel-btn')) return;
-                    const isActive = wrapper.classList.contains('active');
-                    document.querySelectorAll('.card-wrapper.active').forEach(el => el.classList.remove('active'));
-                    if (!isActive) wrapper.classList.add('active');
-                };
+        function performSearch() {
+            const term = document.getElementById('search-input').value.toLowerCase().trim();
+            const filtered = products.filter(p => {
+                const matchesCat = currentCategory === 'Todos' || p.categoria === currentCategory;
+                const matchesText = p.nombre.toLowerCase().includes(term) || 
+                                   p.descripcion.toLowerCase().includes(term) ||
+                                   p.tags.some(t => t.includes(term));
+                return matchesCat && matchesText;
             });
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.card-wrapper') && !e.target.closest('.btn-action')) {
-                    document.querySelectorAll('.card-wrapper.active').forEach(el => el.classList.remove('active'));
-                }
-            });
+            displayProducts(filtered);
+            showSuggestions(term);
         }
 
-        function addToCart(id, btn, event) {
-            if(event) { event.stopPropagation(); event.preventDefault(); }
-            const product = products.find(p => p.id === id);
-            
-            // Evento GTM
-            if(window.dataLayer) {
-                window.dataLayer.push({
-                    'event': 'add_to_cart',
-                    'ecommerce': {
-                        'items': [{ 'item_name': product.nombre, 'item_id': product.id, 'price': product.precio, 'quantity': 1 }]
-                    }
+        function showSuggestions(term) {
+            const div = document.getElementById('search-suggestions');
+            if (term.length < 2) { div.style.display = 'none'; return; }
+
+            // Recolectar tags y nombres que coincidan
+            let hints = [];
+            products.forEach(p => {
+                if (p.nombre.toLowerCase().includes(term)) hints.push({text: p.nombre, type: 'Producto'});
+                p.tags.forEach(t => {
+                    if (t.includes(term)) hints.push({text: t, type: 'Etiqueta'});
                 });
-            }
+            });
 
-            const inCart = cart.find(item => item.id === id);
-            if (inCart) inCart.quantity++; else cart.push({ ...product, quantity: 1 });
+            // Únicos y limitado a 6
+            const uniqueHints = Array.from(new Set(hints.map(h => h.text))).slice(0, 6);
             
-            const span = btn.querySelector('span');
-            span.innerText = "Agregado";
-            btn.classList.add("bg-green-600");
-            saveAndSync();
-            setTimeout(() => { span.innerText = "Agregar"; btn.classList.remove("bg-green-600"); }, 1000);
+            if (uniqueHints.length > 0) {
+                div.innerHTML = uniqueHints.map(h => `<div class="suggestion-item text-xs" onclick="selectSuggestion('${h}')"><i class="fas fa-search mr-2 opacity-30"></i>${h}</div>`).join('');
+                div.style.display = 'block';
+            } else {
+                div.style.display = 'none';
+            }
         }
 
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            saveAndSync();
+        function selectSuggestion(val) {
+            document.getElementById('search-input').value = val;
+            document.getElementById('search-suggestions').style.display = 'none';
+            performSearch();
         }
 
-        function saveAndSync() {
-            localStorage.setItem('luna_roja_cart_final', JSON.stringify(cart));
-            updateUI();
+        document.getElementById('search-input').addEventListener('input', performSearch);
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            performSearch();
         }
 
-        function updateUI() {
-            const countLabel = document.getElementById('cart-count');
+        // CART LOGIC
+        function addToCart(id, e) {
+            e.stopPropagation();
+            const p = products.find(x => x.id === id);
+            const exist = cart.find(x => x.id === id);
+            if (exist) exist.qty++; else cart.push({...p, qty: 1});
+            saveCart();
+            updateCartUI();
+        }
+
+        function saveCart() { localStorage.setItem('luna_roja_cart_v2', JSON.stringify(cart)); }
+
+        function updateCartUI() {
+            const count = document.getElementById('cart-count');
             const content = document.getElementById('cart-content');
             const totalDisplay = document.getElementById('cart-total');
-            countLabel.innerText = cart.reduce((acc, i) => acc + i.quantity, 0);
             
-            if (cart.length === 0) {
-                content.innerHTML = `<p class="text-center text-slate-600 text-xs py-20 uppercase tracking-widest">Carrito Vacío</p>`;
-                totalDisplay.innerText = "$ 0,00";
-                return;
-            }
+            const totalQty = cart.reduce((acc, i) => acc + i.qty, 0);
+            count.innerText = totalQty;
             
             let total = 0;
             content.innerHTML = cart.map(item => {
-                const sub = item.precio * item.quantity;
-                total += sub;
-                // Thumbnail: primera imagen
-                const thumb = item.imagenes && item.imagenes.length > 0 ? item.imagenes[0] : item.imagen;
-                
+                total += item.precio * item.qty;
                 return `
-                    <div class="flex items-center space-x-5 border-b border-white/5 pb-4">
-                        <img src="${thumb}" class="w-16 h-16 object-cover rounded shadow border border-white/10" onerror="handleImgError(this)">
+                    <div class="flex items-center gap-4">
+                        <img src="${item.imagenes[0]}" class="w-16 h-16 object-cover rounded bg-white/5">
                         <div class="flex-grow">
-                            <h4 class="text-sm font-bold text-white leading-tight">${item.nombre}</h4>
-                            <div class="flex items-center justify-between mt-2">
-                                <span class="bg-rose-500/10 text-rose-500 text-[10px] px-2 py-1 rounded font-bold">${item.quantity} u.</span>
-                                <p class="text-sm text-slate-400 font-semibold">$${sub.toLocaleString('es-AR')}</p>
-                            </div>
+                            <h4 class="text-white text-xs font-bold">${item.nombre}</h4>
+                            <p class="text-rose-500 text-xs mt-1">${item.qty} x $${item.precio.toLocaleString()}</p>
                         </div>
-                        <button onclick="removeFromCart(${item.id})" class="text-slate-700 hover:text-rose-500 p-2"><i class="fas fa-trash-alt"></i></button>
+                        <button onclick="removeCart(${item.id})" class="text-slate-600 hover:text-white"><i class="fas fa-trash"></i></button>
                     </div>
                 `;
             }).join('');
             totalDisplay.innerText = `$ ${total.toLocaleString('es-AR')}`;
         }
 
+        function removeCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            saveCart();
+            updateCartUI();
+        }
+
         function toggleCart() {
-            const sidebar = document.getElementById('cart-sidebar');
-            const overlay = document.getElementById('cart-overlay');
-            const isOpen = !sidebar.classList.contains('translate-x-full');
-            if (!isOpen) {
-                sidebar.classList.remove('translate-x-full');
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.add('opacity-100'), 10);
-            } else {
-                sidebar.classList.add('translate-x-full');
-                overlay.classList.remove('opacity-100');
-                setTimeout(() => overlay.classList.add('hidden'), 500);
-            }
+            const side = document.getElementById('cart-sidebar');
+            const over = document.getElementById('cart-overlay');
+            side.classList.toggle('translate-x-full');
+            over.classList.toggle('hidden');
         }
-
-        function clearSearch() {
-            document.getElementById('search-input').value = '';
-            filterByCategory('Todos');
-            document.getElementById('back-btn').classList.add('hidden');
-        }
-
-        function sendDirectWhatsApp() { window.open(`https://wa.me/${WHATSAPP_PHONE}`, '_blank'); }
 
         function sendToWhatsApp() {
             if (cart.length === 0) return;
-            let total = 0;
-            let msg = "✨ *LUNA ROJA - PEDIDO WEB* ✨%0A%0A";
-            cart.forEach(i => {
-                msg += `🔸 *${i.nombre}* [${i.infoCorta || ''}] x ${i.quantity}%0A`;
-                total += (i.precio * i.quantity);
-            });
-            msg += `%0A💰 *TOTAL: $${total.toLocaleString('es-AR')}*%0A%0A_¿Me confirmas disponibilidad?_`;
+            let msg = "*LUNA ROJA - PEDIDO*%0A%0A";
+            cart.forEach(i => msg += `- ${i.nombre} (x${i.qty})%0A`);
             window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${msg}`, '_blank');
         }
 
-        document.getElementById('search-input').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const backBtn = document.getElementById('back-btn');
-            if(term.length > 0) backBtn.classList.remove('hidden'); else backBtn.classList.add('hidden');
-            
-            const filtered = products.filter(p => 
-                (p.nombre.toLowerCase().includes(term) || 
-                p.descripcion.toLowerCase().includes(term)) &&
-                (currentCategory === 'Todos' || p.categoria === currentCategory)
-            );
-            displayProducts(filtered);
-            initMobileCards(); 
+        // Scroll Up
+        window.onscroll = () => {
+            const btn = document.getElementById('scroll-up');
+            if (window.scrollY > 500) btn.classList.add('show'); else btn.classList.remove('show');
+        };
+
+        // Cerrar sugerencias si se hace clic afuera
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#search-input')) {
+                document.getElementById('search-suggestions').style.display = 'none';
+            }
         });
-
-        // --- SCROLL TO TOP LOGIC ---
-        function initScrollTop() {
-            const btn = document.getElementById('scroll-up-btn');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 400) {
-                    btn.classList.add('visible');
-                } else {
-                    btn.classList.remove('visible');
-                }
-            });
-        }
-
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
     </script>
 </body>
 </html>
