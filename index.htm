@@ -51,7 +51,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* --- CATEGORIAS --- */
         .category-pill {
             transition: all 0.3s ease;
             white-space: nowrap;
@@ -63,7 +62,6 @@
             border-color: var(--accent);
         }
 
-        /* --- CARDS --- */
         .card-wrapper {
             position: relative;
             height: 28rem;
@@ -94,10 +92,9 @@
                 border-color: var(--accent);
                 background: #1a1a1f;
             }
-            .card-wrapper:hover img { transform: scale(1.5); }
+            .card-wrapper:hover .img-container img { transform: scale(1.3); }
         }
 
-        /* --- CLICK / ACTIVE ZOOM 1.3 --- */
         .card-wrapper.active { z-index: 60; }
         .card-wrapper.active .product-card {
             height: auto;
@@ -106,7 +103,7 @@
             border-color: var(--accent);
             box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.95);
         }
-        .card-wrapper.active img { transform: scale(1.3) !important; }
+        .card-wrapper.active .img-container img { transform: scale(1.3) !important; }
         .card-wrapper.active .img-container { height: 18rem; }
 
         .img-container {
@@ -115,6 +112,9 @@
             overflow: hidden;
             background: #0c0c0e;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .img-container img {
@@ -122,10 +122,30 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: scale(1.15); 
         }
 
-        /* Sugerencias de búsqueda */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 20;
+        }
+        .card-wrapper:hover .nav-btn, .card-wrapper.active .nav-btn { opacity: 1; }
+        .nav-btn:hover { background: var(--accent); }
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
         #search-suggestions {
             background: #16161a;
             border: 1px solid rgba(255,255,255,0.1);
@@ -146,7 +166,6 @@
             color: var(--accent);
         }
 
-        /* Botón Ir Arriba */
         #scroll-up {
             position: fixed;
             bottom: 2rem;
@@ -174,7 +193,6 @@
     </style>
 </head>
 <body class="antialiased">
-    <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZKLWSRX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
     <nav class="glass-nav sticky top-0 z-[100] py-4 px-6">
@@ -201,7 +219,6 @@
                         <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
                     </div>
                 </div>
-                <!-- Sugerencias -->
                 <div id="search-suggestions" class="absolute top-full left-0 right-0 mt-2 z-[110]"></div>
             </div>
 
@@ -231,24 +248,54 @@
         <i class="fas fa-chevron-up"></i>
     </div>
 
-    <footer id="footer" class="mt-20 pt-20 pb-10 px-6 bg-[#0f1115] border-t border-white/5">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div>
-                <div class="flex items-center space-x-3 mb-6">
-                    <i class="fas fa-moon text-rose-600 text-xl"></i>
-                    <span class="font-brand text-xl text-white">LUNA ROJA</span>
+    <footer id="footer" class="mt-20 py-20 px-6 bg-[#0f1115] border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center space-x-4 mb-8">
+                    <div class="w-12 h-12 bg-rose-600 flex items-center justify-center rounded-lg">
+                        <i class="fas fa-moon text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-brand text-2xl text-white tracking-widest">LUNA ROJA</h3>
+                        <p class="text-rose-500 text-[10px] uppercase font-bold tracking-[0.4em]">Sublimación & Arte</p>
+                    </div>
                 </div>
-                <p class="text-slate-400 text-sm leading-relaxed">Explora nuestra cuidada selección de arte, objetos únicos y remeras artesanales.</p>
+                <p class="text-slate-400 text-sm leading-relaxed max-w-md">Explora nuestra colección curada de arte, objetos únicos y diseños personalizados. Hecho con pasión en Buenos Aires.</p>
             </div>
+            
             <div>
-                <h4 class="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold mb-6">Contacto</h4>
-                <p class="text-sm text-slate-300 mb-2">librerialunaroja@gmail.com</p>
-                <p class="text-sm text-slate-300">Charlone 608, Chacarita</p>
+                <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold mb-8">Contacto</h4>
+                <ul class="space-y-4 text-sm text-slate-400">
+                    <li class="flex items-center space-x-3">
+                        <i class="fas fa-map-marker-alt text-rose-600"></i>
+                        <span>Charlone 608, Chacarita</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i class="fas fa-envelope text-rose-600"></i>
+                        <span>librerialunaroja@gmail.com</span>
+                    </li>
+                    <li class="flex items-center space-x-3 cursor-pointer hover:text-rose-500 transition-colors" onclick="sendDirectWhatsApp()">
+                        <i class="fab fa-whatsapp text-rose-600"></i>
+                        <span>WhatsApp: +54 9 11 4446-0693</span>
+                    </li>
+                </ul>
             </div>
-            <div class="flex gap-4">
-                <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="text-2xl text-slate-500 hover:text-rose-500"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.facebook.com/people/Sublime-Luna-Roja/61559491830875" target="_blank" class="text-2xl text-slate-500 hover:text-rose-500"><i class="fab fa-facebook"></i></a>
+
+            <div>
+                <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold mb-8">Seguinos</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-rose-600 hover:text-white transition-all">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/people/Sublime-Luna-Roja/61559491830875" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-rose-600 hover:text-white transition-all">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
             </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest">© 2024 LIBRERÍA LUNA ROJA. TODOS LOS DERECHOS RESERVADOS.</p>
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest">DISEÑADO CON <i class="fas fa-heart text-rose-600 mx-1"></i> PARA EL ARTE.</p>
         </div>
     </footer>
 
@@ -275,6 +322,8 @@
         const WHATSAPP_PHONE = "5491144460693"; 
         const SHEET_ID = "11s7m68TJhweA-lNP0QSVSfXDV8wRBNHbRT0ubremuuM";
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+        // Imagen por defecto si falla la carga o el link está vacío
+        const DEFAULT_IMG = "https://placehold.co/400x500/16161a/e11d48?text=Luna+Roja";
         
         let products = [];
         let categories = [];
@@ -293,11 +342,12 @@
                     const parts = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     const clean = (str) => str ? str.replace(/^"|"$/g, '').trim() : "";
                     
-                    // Imágenes múltiples
                     let imgRaw = clean(parts[4]);
                     let images = imgRaw.includes(';') ? imgRaw.split(';').map(u => u.trim()) : [imgRaw || ""];
+                    // Filtrar links vacíos y asignar defecto si no hay ninguno válido
+                    images = images.filter(link => link.length > 0);
+                    if (images.length === 0) images = [DEFAULT_IMG];
                     
-                    // Subcategorías (Columna 7 del Excel)
                     let subRaw = clean(parts[7]); 
                     let subCategories = subRaw ? subRaw.split(';').map(s => s.trim().toLowerCase()) : [];
 
@@ -308,7 +358,7 @@
                         stock: parseInt(clean(parts[2])) || 0,
                         precio: parseFloat(clean(parts[3]).replace(/[^0-9,.]/g, '').replace(',', '.')) || 0,
                         imagenes: images,
-                        currentImg: 0,
+                        currentImgIndex: 0,
                         infoCorta: clean(parts[5]),
                         categoria: clean(parts[6]) || "Otros",
                         tags: subCategories
@@ -343,11 +393,20 @@
 
         function displayProducts(items) {
             const grid = document.getElementById('products-grid');
-            grid.innerHTML = items.map(p => `
-                <div class="card-wrapper" onclick="toggleActive(this)">
+            grid.innerHTML = items.map(p => {
+                const hasMultiple = p.imagenes.length > 1;
+                return `
+                <div class="card-wrapper" id="wrapper-${p.id}" onclick="toggleActive(this)">
                     <div class="product-card">
                         <div class="img-container">
-                            <img id="img-${p.id}" src="${p.imagenes[0]}" alt="${p.nombre}" onerror="this.src='https://placehold.co/400x500/16161a/white?text=Luna+Roja'">
+                            ${hasMultiple ? `
+                                <button onclick="changeImage(${p.id}, -1, event)" class="nav-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                                <button onclick="changeImage(${p.id}, 1, event)" class="nav-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+                            ` : ''}
+                            <img id="img-${p.id}" 
+                                 src="${p.imagenes[p.currentImgIndex]}" 
+                                 alt="${p.nombre}" 
+                                 onerror="this.onerror=null; this.src='${DEFAULT_IMG}'">
                         </div>
                         <div class="p-5 flex flex-col flex-grow">
                             <h3 class="text-white font-bold text-sm mb-2">${p.nombre}</h3>
@@ -361,7 +420,19 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
+        }
+
+        function changeImage(id, delta, e) {
+            if (e) e.stopPropagation();
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            
+            p.currentImgIndex = (p.currentImgIndex + delta + p.imagenes.length) % p.imagenes.length;
+            const imgElement = document.getElementById(`img-${id}`);
+            if (imgElement) {
+                imgElement.src = p.imagenes[p.currentImgIndex];
+            }
         }
 
         function toggleActive(el) {
@@ -387,7 +458,6 @@
             const div = document.getElementById('search-suggestions');
             if (term.length < 2) { div.style.display = 'none'; return; }
 
-            // Recolectar tags y nombres que coincidan
             let hints = [];
             products.forEach(p => {
                 if (p.nombre.toLowerCase().includes(term)) hints.push({text: p.nombre, type: 'Producto'});
@@ -396,7 +466,6 @@
                 });
             });
 
-            // Únicos y limitado a 6
             const uniqueHints = Array.from(new Set(hints.map(h => h.text))).slice(0, 6);
             
             if (uniqueHints.length > 0) {
@@ -420,7 +489,6 @@
             performSearch();
         }
 
-        // CART LOGIC
         function addToCart(id, e) {
             e.stopPropagation();
             const p = products.find(x => x.id === id);
@@ -445,7 +513,7 @@
                 total += item.precio * item.qty;
                 return `
                     <div class="flex items-center gap-4">
-                        <img src="${item.imagenes[0]}" class="w-16 h-16 object-cover rounded bg-white/5">
+                        <img src="${item.imagenes[0]}" class="w-16 h-16 object-cover rounded bg-white/5" onerror="this.src='${DEFAULT_IMG}'">
                         <div class="flex-grow">
                             <h4 class="text-white text-xs font-bold">${item.nombre}</h4>
                             <p class="text-rose-500 text-xs mt-1">${item.qty} x $${item.precio.toLocaleString()}</p>
@@ -470,20 +538,25 @@
             over.classList.toggle('hidden');
         }
 
+        function sendDirectWhatsApp() { window.open(`https://wa.me/${WHATSAPP_PHONE}`, '_blank'); }
+
         function sendToWhatsApp() {
             if (cart.length === 0) return;
+            let total = 0;
             let msg = "*LUNA ROJA - PEDIDO*%0A%0A";
-            cart.forEach(i => msg += `- ${i.nombre} (x${i.qty})%0A`);
+            cart.forEach(i => {
+                msg += `- ${i.nombre} (x${i.qty})%0A`;
+                total += (i.precio * i.qty);
+            });
+            msg += `%0A*TOTAL: $${total.toLocaleString('es-AR')}*`;
             window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${msg}`, '_blank');
         }
 
-        // Scroll Up
         window.onscroll = () => {
             const btn = document.getElementById('scroll-up');
             if (window.scrollY > 500) btn.classList.add('show'); else btn.classList.remove('show');
         };
 
-        // Cerrar sugerencias si se hace clic afuera
         document.addEventListener('click', (e) => {
             if (!e.target.closest('#search-input')) {
                 document.getElementById('search-suggestions').style.display = 'none';
