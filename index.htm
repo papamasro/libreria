@@ -397,7 +397,7 @@
         <i class="fas fa-chevron-up"></i>
     </div>
 
-    <!-- FOOTER LIMPIO -->
+    <!-- FOOTER LIMPIO Y ACTUALIZADO -->
     <footer id="footer" class="footer-site mt-20 py-20 px-6 border-t border-rose-900/30">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
             <div class="col-span-1 md:col-span-2">
@@ -411,19 +411,19 @@
                         <h3 class="text-xl font-brand tracking-[0.2em] text-outline-red leading-none mt-1">LUNA ROJA</h3>
                     </div>
                 </div>
-                <p class="text-slate-400 text-sm leading-relaxed max-w-md border-l-2 border-rose-900/50 pl-4">Explora nuestra colección curada de arte, objetos únicos y diseños personalizados. Hecho con pasión en Buenos Aires.</p>
+                <p class="text-slate-400 text-base leading-relaxed max-w-md border-l-2 border-rose-900/50 pl-4">Explora nuestra colección curada de arte, objetos únicos y diseños personalizados. Hecho con pasión en Buenos Aires.</p>
             </div>
             
             <div>
-                <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold mb-8">Contacto</h4>
-                <ul class="space-y-4 text-sm text-slate-400">
+                <h4 class="text-xs uppercase tracking-[0.3em] text-rose-500 font-bold mb-8">Contacto</h4>
+                <ul class="space-y-4 text-base text-slate-400">
                     <li class="flex items-center space-x-3">
                         <i class="fas fa-map-marker-alt text-rose-600"></i>
-                        <span>Charlone 608, Chacarita</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Charlone+608,+Chacarita,+Buenos+Aires" target="_blank" class="hover:text-rose-500 transition-colors">Charlone 608, Chacarita</a>
                     </li>
                     <li class="flex items-center space-x-3">
                         <i class="fas fa-envelope text-rose-600"></i>
-                        <span>librerialunaroja@gmail.com</span>
+                        <a href="mailto:librerialunaroja@gmail.com" class="hover:text-rose-500 transition-colors">librerialunaroja@gmail.com</a>
                     </li>
                     <li class="flex items-center space-x-3 cursor-pointer hover:text-rose-500 transition-colors" onclick="sendDirectWhatsApp()">
                         <i class="fab fa-whatsapp text-rose-600"></i>
@@ -433,20 +433,20 @@
             </div>
 
             <div>
-                <h4 class="text-[10px] uppercase tracking-[0.3em] text-rose-500 font-bold mb-8">Seguinos</h4>
+                <h4 class="text-xs uppercase tracking-[0.3em] text-rose-500 font-bold mb-8">Seguinos</h4>
                 <div class="flex space-x-4">
-                    <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-rose-600 hover:text-white transition-all hover:scale-110 hover:shadow-[0_0_15px_rgba(225,29,72,0.5)]">
+                    <a href="https://www.instagram.com/sublime.luna.roja/" target="_blank" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-slate-400 text-xl hover:bg-rose-600 hover:text-white transition-all hover:scale-110 hover:shadow-[0_0_15px_rgba(225,29,72,0.5)]">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://www.facebook.com/people/Sublime-Luna-Roja/61559491830875" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-rose-600 hover:text-white transition-all hover:scale-110 hover:shadow-[0_0_15px_rgba(225,29,72,0.5)]">
+                    <a href="https://www.facebook.com/people/Sublime-Luna-Roja/61559491830875" target="_blank" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-slate-400 text-xl hover:bg-rose-600 hover:text-white transition-all hover:scale-110 hover:shadow-[0_0_15px_rgba(225,29,72,0.5)]">
                         <i class="fab fa-facebook-f"></i>
                     </a>
                 </div>
             </div>
         </div>
         <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest">© 2024 SUBLIME LUNA ROJA. TODOS LOS DERECHOS RESERVADOS.</p>
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest">DISEÑADO CON <i class="fas fa-heart text-rose-600 mx-1 animate-pulse"></i> PARA EL ARTE.</p>
+            <p class="text-xs text-slate-500 uppercase tracking-widest">© 2024 SUBLIME LUNA ROJA. TODOS LOS DERECHOS RESERVADOS.</p>
+            <p class="text-xs text-slate-500 uppercase tracking-widest">DISEÑADO CON <i class="fas fa-heart text-rose-600 mx-1 animate-pulse"></i> PARA EL ARTE.</p>
         </div>
     </footer>
 
@@ -575,7 +575,7 @@
                             <div class="hidden-details">
                                 <div class="w-full h-px bg-white/20 mb-3 mt-2"></div>
                                 ${infoBadgeHtml}
-                                <p class="text-xs text-slate-200 leading-relaxed font-light mb-4 drop-shadow-sm">${p.descripcion}</p>
+                                <p class="text-sm text-slate-200 leading-relaxed font-light mb-4 drop-shadow-sm">${p.descripcion}</p>
                                 
                                 <button onclick="addToCart(${p.id}, event)" ${p.stock <= 0 ? 'disabled' : ''} 
                                     class="btn-action w-full py-3 rounded-lg text-white font-bold text-xs uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed border border-rose-600">
