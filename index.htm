@@ -337,9 +337,36 @@
             box-shadow: 0 0 25px rgba(225, 29, 72, 0.6);
             border: 1px solid rgba(225, 29, 72, 0.3);
         }
+        
+        /* --- ANIMACIÓN PARA EL BANNER --- */
+        @keyframes gradientShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* --- CUSTOM SCROLLBARS --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4c1d2e; /* Tono oscuro de rojo/vino */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent); /* Rojo de la marca */
+        }
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #4c1d2e var(--bg-deep);
+        }
     </style>
 </head>
 <body class="antialiased">    
+
     <!-- ZOOM MODAL -->
     <div id="zoom-modal" onclick="closeZoom()">
         <button class="close-zoom">&times;</button>
@@ -383,9 +410,23 @@
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-12 flex-grow w-full">
+        <!-- PROMO BANNER (Reubicado y más alto) -->
+        <div id="promo-banner" onclick="sendDirectWhatsApp()" class="bg-gradient-to-r from-rose-900 via-rose-600 to-rose-900 bg-[length:200%_auto] animate-[gradientShine_4s_linear_infinite] hover:brightness-125 transition-all cursor-pointer text-white text-xs sm:text-sm font-bold uppercase tracking-[0.2em] py-4 md:py-5 px-4 mb-10 rounded-xl shadow-[0_0_20px_rgba(225,29,72,0.5)] text-center relative flex items-center justify-center w-full border border-white/10">
+            <div class="flex items-center gap-3 w-full max-w-3xl justify-center">
+                <i class="fab fa-whatsapp text-base md:text-xl animate-pulse"></i>
+                <div class="h-6 overflow-hidden relative w-full max-w-sm">
+                    <div id="promo-text" class="absolute w-full transition-all duration-500 ease-in-out transform translate-y-0 opacity-100 flex items-center justify-center h-full">
+                        Cargando promociones...
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right text-xs opacity-50"></i>
+            </div>
+        </div>
+
         <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <h2 class="text-3xl font-brand text-white">Nuestra Colección</h2>
-            <div id="category-filters" class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide"></div>
+            <!-- Filtros con flex-wrap para que bajen en lugar de scrollear -->
+            <div id="category-filters" class="flex gap-3 flex-wrap pb-2"></div>
         </div>
 
         <div id="loading-state" class="flex flex-col items-center justify-center py-20">
@@ -484,12 +525,52 @@
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
         const DEFAULT_IMG = "https://placehold.co/400x500/16161a/e11d48?text=Luna+Roja";
         
+        // --- LOGICA DEL BANNER PROMO (UX/UI) ---
+        const promos = [
+            "🔥 ¡4X3 EN REMERAS! LLEVÁ 4, PAGÁ 3",
+            "🚚 ENVÍOS BARATOS A TODO EL PAÍS",
+            "✨ DISEÑOS ÚNICOS DE AUTOR",
+            "💬 DISEÑAMOS TU REMERA"
+        ];
+        let currentPromo = 0;
+
+        function initPromoCarousel() {
+            const promoEl = document.getElementById('promo-text');
+            if(!promoEl) return;
+            
+            promoEl.innerText = promos[0];
+            
+            setInterval(() => {
+                // Fade out hacia arriba
+                promoEl.style.opacity = '0';
+                promoEl.style.transform = 'translateY(-15px)';
+                
+                setTimeout(() => {
+                    currentPromo = (currentPromo + 1) % promos.length;
+                    promoEl.innerText = promos[currentPromo];
+                    
+                    // Preparar la entrada desde abajo
+                    promoEl.style.transform = 'translateY(15px)';
+                    
+                    // Fade in hacia el centro
+                    setTimeout(() => {
+                        promoEl.style.opacity = '1';
+                        promoEl.style.transform = 'translateY(0)';
+                    }, 50);
+                }, 500); // Espera a que termine de desaparecer
+            }, 3500); // Cambia el texto cada 3.5 segundos
+        }
+
         let products = [];
         let categories = [];
         let currentCategory = 'Todos';
         let cart = JSON.parse(localStorage.getItem('luna_roja_cart_v2')) || [];
 
-        window.onload = loadStock;
+        // Inicializamos el banner junto con la carga de productos
+        window.onload = () => {
+            initPromoCarousel();
+            loadStock();
+        };
 
         async function loadStock() {
             try {
