@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MMC1SFD53E"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MMC1SFD53E"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-MMC1SFD53E');
-</script>
+      gtag('config', 'G-MMC1SFD53E');
+    </script>
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -48,7 +48,6 @@
         .font-brand { font-family: 'Cinzel', serif; }
         .font-serif { font-family: 'Playfair Display', serif; }
 
-        /* --- ESTILO ESPECIAL: NEGRO CON BORDE ROJO --- */
         .text-outline-red {
             color: black;
             -webkit-text-stroke: 1px var(--accent);
@@ -138,6 +137,8 @@
             object-position: center 80%;
             transform-origin: center;
             transform: scale(1.05);
+            /* Evitar el menu contextual nativo en celulares para habilitar long press sin interrupciones */
+            -webkit-touch-callout: none;
         }
 
         /* --- CONTENIDO DE TEXTO --- */
@@ -327,48 +328,35 @@
         }
         #scroll-up.show { transform: translateY(0); opacity: 1; }
 
-        /* FOOTER ESTILOS */
-        /* Eliminé la sombra difusa roja del medio */
-        .footer-site {
-            background-color: #0f1115; /* Fondo solido limpio */
-        }
-        
+        .footer-site { background-color: #0f1115; }
         .moon-icon-glow {
             box-shadow: 0 0 25px rgba(225, 29, 72, 0.6);
             border: 1px solid rgba(225, 29, 72, 0.3);
         }
         
-        /* --- ANIMACIÓN PARA EL BANNER --- */
         @keyframes gradientShine {
             0% { background-position: 0% center; }
             100% { background-position: 200% center; }
         }
 
         /* --- CUSTOM SCROLLBARS --- */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-deep); 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4c1d2e; /* Tono oscuro de rojo/vino */
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent); /* Rojo de la marca */
-        }
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: #4c1d2e var(--bg-deep);
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: #4c1d2e; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+        * { scrollbar-width: thin; scrollbar-color: #4c1d2e var(--bg-deep); }
+        
+        /* Fix options styling in mobile native selects */
+        select option {
+            background-color: #16161a;
+            color: white;
         }
     </style>
 </head>
 <body class="antialiased">    
 
     <!-- ZOOM MODAL -->
-    <div id="zoom-modal" onclick="closeZoom()">
+    <div id="zoom-modal" onclick="closeZoomModal()">
         <button class="close-zoom">&times;</button>
         <img id="zoom-img" src="" alt="Zoom" onclick="event.stopPropagation()">
     </div>
@@ -380,7 +368,6 @@
                     <i class="fas fa-moon text-3xl icon-outline-red"></i>
                 </div>
                 <div class="flex flex-col">
-                    <!-- Texto Sublime y Luna Roja igual de grandes y mismo estilo -->
                     <h1 class="text-xl font-brand tracking-[0.2em] text-outline-red leading-none">SUBLIME</h1>
                     <h1 class="text-xl font-brand tracking-[0.2em] text-outline-red leading-none mt-1">LUNA ROJA</h1>
                 </div>
@@ -410,22 +397,21 @@
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-12 flex-grow w-full">
-        <!-- PROMO BANNER (Reubicado y más alto) -->
-        <div id="promo-banner" onclick="sendDirectWhatsApp()" class="bg-gradient-to-r from-rose-900 via-rose-600 to-rose-900 bg-[length:200%_auto] animate-[gradientShine_4s_linear_infinite] hover:brightness-125 transition-all cursor-pointer text-white text-xs sm:text-sm font-bold uppercase tracking-[0.2em] py-4 md:py-5 px-4 mb-10 rounded-xl shadow-[0_0_20px_rgba(225,29,72,0.5)] text-center relative flex items-center justify-center w-full border border-white/10">
+        <!-- PROMO BANNER (Con mensaje general de Whatsapp) -->
+        <div id="promo-banner" onclick="sendBannerWhatsApp()" class="bg-gradient-to-r from-rose-900 via-rose-600 to-rose-900 bg-[length:200%_auto] animate-[gradientShine_4s_linear_infinite] hover:brightness-125 transition-all cursor-pointer text-white text-xs sm:text-sm font-bold uppercase tracking-[0.2em] py-4 md:py-5 px-4 mb-10 rounded-xl shadow-[0_0_20px_rgba(225,29,72,0.5)] text-center relative flex items-center justify-center w-full border border-white/10">
             <div class="flex items-center gap-3 w-full max-w-3xl justify-center">
-                <i class="fab fa-whatsapp text-base md:text-xl animate-pulse"></i>
-                <div class="h-6 overflow-hidden relative w-full max-w-sm">
-                    <div id="promo-text" class="absolute w-full transition-all duration-500 ease-in-out transform translate-y-0 opacity-100 flex items-center justify-center h-full">
+                <i class="fab fa-whatsapp text-base md:text-xl animate-pulse shrink-0"></i>
+                <div class="h-10 overflow-hidden relative w-full max-w-sm">
+                    <div id="promo-text" class="absolute w-full transition-all duration-500 ease-in-out transform translate-y-0 opacity-100 flex items-center justify-center h-full leading-tight">
                         Cargando promociones...
                     </div>
                 </div>
-                <i class="fas fa-chevron-right text-xs opacity-50"></i>
+                <i class="fas fa-chevron-right text-xs opacity-50 shrink-0"></i>
             </div>
         </div>
 
         <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <h2 class="text-3xl font-brand text-white">Nuestra Colección</h2>
-            <!-- Filtros con flex-wrap para que bajen en lugar de scrollear -->
             <div id="category-filters" class="flex gap-3 flex-wrap pb-2"></div>
         </div>
 
@@ -441,12 +427,10 @@
         <i class="fas fa-chevron-up"></i>
     </div>
 
-    <!-- FOOTER LIMPIO Y ACTUALIZADO -->
     <footer id="footer" class="footer-site mt-20 py-20 px-6 border-t border-rose-900/30">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
             <div class="col-span-1 md:col-span-2">
                 <div class="flex items-center space-x-4 mb-8">
-                    <!-- Icono en Footer con Glow -->
                     <div class="w-14 h-14 flex items-center justify-center rounded-full bg-black moon-icon-glow">
                         <i class="fas fa-moon text-3xl icon-outline-red"></i>
                     </div>
@@ -469,7 +453,8 @@
                         <i class="fas fa-envelope text-rose-600"></i>
                         <a href="mailto:librerialunaroja@gmail.com" class="hover:text-rose-500 transition-colors">librerialunaroja@gmail.com</a>
                     </li>
-                    <li class="flex items-center space-x-3 cursor-pointer hover:text-rose-500 transition-colors" onclick="sendDirectWhatsApp()">
+                    <!-- WhatsApp general link -->
+                    <li class="flex items-center space-x-3 cursor-pointer hover:text-rose-500 transition-colors" onclick="sendBannerWhatsApp()">
                         <i class="fab fa-whatsapp text-rose-600"></i>
                         <span>WhatsApp: +54 9 11 4446-0693</span>
                     </li>
@@ -519,18 +504,61 @@
         <span class="text-sm font-bold tracking-wider">¡Enlace copiado!</span>
     </div>
 
+    <!-- OPTIONS MODAL (NEW) -->
+    <div id="options-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] hidden items-center justify-center" onclick="closeOptionsModal()">
+        <div class="bg-[#16161a] border border-white/10 rounded-2xl p-6 w-[90%] max-w-sm flex flex-col gap-5 shadow-2xl" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-1">
+                <h3 class="text-xl font-brand text-white">OPCIONES</h3>
+                <button onclick="closeOptionsModal()" class="text-slate-500 hover:text-white transition-colors text-2xl">&times;</button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-2 block">Talle</label>
+                    <div class="relative">
+                        <select id="option-size" class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white appearance-none focus:outline-none focus:border-rose-500 cursor-pointer">
+                            <option value="N/A">Seleccionar talle / No aplica</option>
+                            <option value="S">Talle S</option>
+                            <option value="M">Talle M</option>
+                            <option value="L">Talle L</option>
+                            <option value="XL">Talle XL</option>
+                            <option value="XXL">Talle XXL</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"></i>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-2 block">Color</label>
+                    <div class="relative">
+                        <select id="option-color" class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white appearance-none focus:outline-none focus:border-rose-500 cursor-pointer">
+                            <option value="N/A">Seleccionar color / No aplica</option>
+                            <option value="Negro">Negro</option>
+                            <option value="Blanco">Blanco</option>
+                            <option value="Gris">Gris</option>
+                            <option value="Rojo">Rojo</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"></i>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="confirmOptions()" class="btn-action w-full py-4 mt-2 rounded-xl text-white font-bold text-sm uppercase tracking-wider shadow-lg shadow-rose-900/20">
+                Confirmar y Agregar
+            </button>
+        </div>
+    </div>
+
     <script>
         const WHATSAPP_PHONE = "5491144460693"; 
         const SHEET_ID = "11s7m68TJhweA-lNP0QSVSfXDV8wRBNHbRT0ubremuuM";
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
         const DEFAULT_IMG = "https://placehold.co/400x500/16161a/e11d48?text=Luna+Roja";
         
-        // --- LOGICA DEL BANNER PROMO (UX/UI) ---
         const promos = [
             "🔥 ¡4X3 EN REMERAS! LLEVÁ 4, PAGÁ 3",
             "🚚 ENVÍOS BARATOS A TODO EL PAÍS",
             "✨ DISEÑOS ÚNICOS DE AUTOR",
-            "💬 DISEÑAMOS TU REMERA"
+            "💬 TOCÁ ACÁ PARA PEDIR POR WHATSAPP"
         ];
         let currentPromo = 0;
 
@@ -539,26 +567,19 @@
             if(!promoEl) return;
             
             promoEl.innerText = promos[0];
-            
             setInterval(() => {
-                // Fade out hacia arriba
                 promoEl.style.opacity = '0';
                 promoEl.style.transform = 'translateY(-15px)';
-                
                 setTimeout(() => {
                     currentPromo = (currentPromo + 1) % promos.length;
                     promoEl.innerText = promos[currentPromo];
-                    
-                    // Preparar la entrada desde abajo
                     promoEl.style.transform = 'translateY(15px)';
-                    
-                    // Fade in hacia el centro
                     setTimeout(() => {
                         promoEl.style.opacity = '1';
                         promoEl.style.transform = 'translateY(0)';
                     }, 50);
-                }, 500); // Espera a que termine de desaparecer
-            }, 3500); // Cambia el texto cada 3.5 segundos
+                }, 500); 
+            }, 3500);
         }
 
         let products = [];
@@ -566,7 +587,15 @@
         let currentCategory = 'Todos';
         let cart = JSON.parse(localStorage.getItem('luna_roja_cart_v2')) || [];
 
-        // Inicializamos el banner junto con la carga de productos
+        // Update legacy cart array objects (if they lack cartItemId for the new setup)
+        cart.forEach(item => {
+            if (!item.cartItemId) {
+                item.size = item.size || 'N/A';
+                item.color = item.color || 'N/A';
+                item.cartItemId = `${item.id}_${item.size}_${item.color}`;
+            }
+        });
+
         window.onload = () => {
             initPromoCarousel();
             loadStock();
@@ -610,7 +639,6 @@
                 document.getElementById('loading-state').style.display = 'none';
                 updateCartUI();
 
-                // Manejo de enlace compartido
                 const params = new URLSearchParams(window.location.search);
                 const sharedId = params.get('p');
                 if (sharedId !== null) {
@@ -622,7 +650,6 @@
                         }
                     }, 500);
                 }
-
             } catch (err) {
                 console.error(err);
                 document.getElementById('loading-state').innerHTML = `<p class="text-rose-500">Error cargando catálogo.</p>`;
@@ -644,6 +671,45 @@
             performSearch();
         }
 
+        // === ZOOM TACTIL / LONG PRESS LOGIC ===
+        let pressTimer;
+        let isLongPressing = false;
+
+        function startLongPress(src, e) {
+            isLongPressing = false;
+            // Solo actuar en eventos touch o mousedown
+            if (e.type.startsWith('touch') || e.type === 'mousedown') {
+                pressTimer = setTimeout(() => {
+                    isLongPressing = true;
+                    openZoomModal(src);
+                    // Opcional: Pequeña vibracion al abrir si esta soportado en el celular
+                    if (navigator.vibrate) navigator.vibrate(40);
+                }, 500); // 500ms para considerar long press
+            }
+        }
+
+        function cancelLongPress() {
+            clearTimeout(pressTimer);
+        }
+
+        function openZoomDesktop(src, e) {
+            if (e) e.stopPropagation();
+            if (isLongPressing) return; // Se previene si ya abrimos con long press
+            if (window.innerWidth <= 768) return; // Clic corto no abre zoom en celulares
+            openZoomModal(src);
+        }
+
+        function openZoomModal(src) {
+            const modal = document.getElementById('zoom-modal');
+            const img = document.getElementById('zoom-img');
+            img.src = src;
+            modal.classList.add('open');
+        }
+
+        function closeZoomModal() {
+            document.getElementById('zoom-modal').classList.remove('open');
+        }
+
         function displayProducts(items) {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = items.map(p => {
@@ -653,6 +719,19 @@
                     : '';
                 
                 const currentImgSrc = p.imagenes[p.currentImgIndex];
+
+                // Asignar los eventos de long press e interaccion a la imagen
+                const imgEvents = `
+                    oncontextmenu="return false;"
+                    draggable="false"
+                    ontouchstart="startLongPress('${currentImgSrc}', event)"
+                    ontouchend="cancelLongPress()"
+                    ontouchmove="cancelLongPress()"
+                    onmousedown="startLongPress('${currentImgSrc}', event)"
+                    onmouseup="cancelLongPress()"
+                    onmouseleave="cancelLongPress()"
+                    onclick="openZoomDesktop('${currentImgSrc}', event)"
+                `;
 
                 return `
                 <div class="card-wrapper group" id="wrapper-${p.id}" onclick="toggleActive(this)">
@@ -666,7 +745,7 @@
                             <img id="img-${p.id}" 
                                  src="${currentImgSrc}" 
                                  alt="${p.nombre}" 
-                                 onclick="openZoom('${currentImgSrc}', event)"
+                                 ${imgEvents}
                                  onerror="this.onerror=null; this.src='${DEFAULT_IMG}'">
                         </div>
 
@@ -688,9 +767,9 @@
                                 </div>
                                 <p class="text-sm text-slate-200 leading-relaxed font-light mb-4 drop-shadow-sm">${p.descripcion}</p>
                                 
-                                <button onclick="addToCart(${p.id}, event)" ${p.stock <= 0 ? 'disabled' : ''} 
-                                    class="btn-action w-full py-3 rounded-lg text-white font-bold text-xs uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed border border-rose-600">
-                                    ${p.stock <= 0 ? 'Sin Stock' : 'Agregar al Carrito'}
+                                <button onclick="openOptionsModal(${p.id}, event)" ${p.stock <= 0 ? 'disabled' : ''} 
+                                    class="btn-action w-full py-3 rounded-lg text-white font-bold text-[11px] uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed border border-rose-600">
+                                    ${p.stock <= 0 ? 'Sin Stock' : '<i class="fas fa-shopping-bag mr-1 text-sm"></i> Agregar al carrito'}
                                 </button>
                             </div>
                         </div>
@@ -708,25 +787,15 @@
             const imgElement = document.getElementById(`img-${id}`);
             if (imgElement) {
                 imgElement.src = p.imagenes[p.currentImgIndex];
-                // Actualizamos el onclick del zoom con la nueva imagen
-                imgElement.setAttribute('onclick', `openZoom('${p.imagenes[p.currentImgIndex]}', event)`);
+                
+                // Actualizar las funciones de los eventos onTouch con la nueva URL de la imagen
+                const src = p.imagenes[p.currentImgIndex];
+                imgElement.setAttribute('ontouchstart', `startLongPress('${src}', event)`);
+                imgElement.setAttribute('onmousedown', `startLongPress('${src}', event)`);
+                imgElement.setAttribute('onclick', `openZoomDesktop('${src}', event)`);
             }
         }
         
-        function openZoom(src, e) {
-            // Ignorar el click de zoom en celulares para que el toque abra la descripción
-            if (window.innerWidth <= 768) return; 
-
-            if (e) e.stopPropagation(); 
-            const modal = document.getElementById('zoom-modal');
-            const img = document.getElementById('zoom-img');
-            img.src = src;
-            modal.classList.add('open');
-        }
-        function closeZoom() {
-            document.getElementById('zoom-modal').classList.remove('open');
-        }
-
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.querySelector('span').innerText = msg;
@@ -758,30 +827,16 @@
             }
         }
 
-        // LÓGICA DE TOGGLE PARA MOBILE MEJORADA
         function toggleActive(el) {
-            // Verificar si la tarjeta que toqué YA estaba activa
             const wasActive = el.classList.contains('active');
-            
-            // Primero cierro TODAS las tarjetas activas
             document.querySelectorAll('.card-wrapper.active').forEach(c => c.classList.remove('active'));
-            
-            // Si la que toqué NO estaba activa, la abro.
-            // Si SÍ estaba activa, como ya cerré todas arriba, se queda cerrada. (Efecto toggle)
-            if (!wasActive) {
-                el.classList.add('active');
-            }
+            if (!wasActive) el.classList.add('active');
         }
 
-        // CERRAR AL HACER CLICK AFUERA (Lógica global)
         document.addEventListener('click', (e) => {
-            // Si el click NO fue en una tarjeta ni en sus hijos...
             if (!e.target.closest('.card-wrapper')) {
-                // Cierro todas las tarjetas
                 document.querySelectorAll('.card-wrapper.active').forEach(c => c.classList.remove('active'));
             }
-
-            // También cerrar sugerencias de búsqueda
             if (!e.target.closest('#search-input')) {
                 document.getElementById('search-suggestions').style.display = 'none';
             }
@@ -813,7 +868,6 @@
             });
 
             const uniqueHints = Array.from(new Set(hints.map(h => h.text))).slice(0, 6);
-            
             if (uniqueHints.length > 0) {
                 div.innerHTML = uniqueHints.map(h => `<div class="suggestion-item text-xs" onclick="selectSuggestion('${h}')"><i class="fas fa-search mr-2 opacity-30"></i>${h}</div>`).join('');
                 div.style.display = 'block';
@@ -829,19 +883,56 @@
         }
 
         document.getElementById('search-input').addEventListener('input', performSearch);
-
         function clearSearch() {
             document.getElementById('search-input').value = '';
             performSearch();
         }
 
-        function addToCart(id, e) {
-            e.stopPropagation();
-            const p = products.find(x => x.id === id);
-            const exist = cart.find(x => x.id === id);
-            if (exist) exist.qty++; else cart.push({...p, qty: 1});
+        // === LOGICA DE MODAL DE OPCIONES Y CARRITO ===
+        let currentModalProductId = null;
+
+        function openOptionsModal(id, e) {
+            if (e) e.stopPropagation(); // Evitar que la tarjeta se cierre
+            currentModalProductId = id;
+            
+            // Restablecer los selects a su valor original
+            document.getElementById('option-size').value = "N/A";
+            document.getElementById('option-color').value = "N/A";
+
+            const modal = document.getElementById('options-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeOptionsModal() {
+            const modal = document.getElementById('options-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            currentModalProductId = null;
+        }
+
+        function confirmOptions() {
+            if (currentModalProductId === null) return;
+            const size = document.getElementById('option-size').value;
+            const color = document.getElementById('option-color').value;
+
+            const p = products.find(x => x.id === currentModalProductId);
+            if (!p) return;
+
+            // Identificador único para el item en el carrito basado en sus opciones
+            const cartItemId = `${p.id}_${size}_${color}`;
+            const exist = cart.find(x => x.cartItemId === cartItemId);
+
+            if (exist) {
+                exist.qty++;
+            } else {
+                cart.push({...p, qty: 1, size: size, color: color, cartItemId: cartItemId});
+            }
+
             saveCart();
             updateCartUI();
+            closeOptionsModal();
+            toggleCart(); // Abrimos el carrito para confirmar al usuario que se agrego
         }
 
         function saveCart() { localStorage.setItem('luna_roja_cart_v2', JSON.stringify(cart)); }
@@ -857,22 +948,35 @@
             let total = 0;
             content.innerHTML = cart.map(item => {
                 total += item.precio * item.qty;
+                
+                // Mostrar opciones solo si se seleccionaron cosas válidas
+                const showOptions = (item.size && item.size !== 'N/A') || (item.color && item.color !== 'N/A');
+                let optionsText = "";
+                if (showOptions) {
+                    optionsText = `<p class="text-slate-400 text-[10px] uppercase mt-1">`;
+                    if (item.size && item.size !== 'N/A') optionsText += `Talle: ${item.size} `;
+                    if (item.size && item.size !== 'N/A' && item.color && item.color !== 'N/A') optionsText += `| `;
+                    if (item.color && item.color !== 'N/A') optionsText += `Color: ${item.color}`;
+                    optionsText += `</p>`;
+                }
+
                 return `
                     <div class="flex items-center gap-4 bg-white/5 p-3 rounded-lg border border-white/5">
                         <img src="${item.imagenes[0]}" class="w-16 h-16 object-cover rounded" onerror="this.src='${DEFAULT_IMG}'">
                         <div class="flex-grow">
                             <h4 class="text-white text-xs font-bold leading-tight">${item.nombre}</h4>
+                            ${optionsText}
                             <p class="text-rose-400 text-xs mt-1 font-mono">${item.qty} x $${item.precio.toLocaleString()}</p>
                         </div>
-                        <button onclick="removeCart(${item.id})" class="text-slate-500 hover:text-rose-500 transition-colors px-2"><i class="fas fa-trash"></i></button>
+                        <button onclick="removeCart('${item.cartItemId}')" class="text-slate-500 hover:text-rose-500 transition-colors px-2"><i class="fas fa-trash"></i></button>
                     </div>
                 `;
             }).join('');
             totalDisplay.innerText = `$ ${total.toLocaleString('es-AR')}`;
         }
 
-        function removeCart(id) {
-            cart = cart.filter(i => i.id !== id);
+        function removeCart(cartItemId) {
+            cart = cart.filter(i => i.cartItemId !== cartItemId);
             saveCart();
             updateCartUI();
         }
@@ -884,16 +988,27 @@
             over.classList.toggle('hidden');
         }
 
-        function sendDirectWhatsApp() { window.open(`https://wa.me/${WHATSAPP_PHONE}`, '_blank'); }
+        // WhatsApp para el Botón del Banner/Footer
+        function sendBannerWhatsApp() {
+            const msg = encodeURIComponent("Hola, me comunico desde la página web, estoy interesado en hacer una compra.");
+            window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${msg}`, '_blank');
+        }
 
+        // WhatsApp para concretar el Carrito
         function sendToWhatsApp() {
             if (cart.length === 0) return;
             let total = 0;
             let msg = "*LUNA ROJA - PEDIDO*%0A%0A";
+            
             cart.forEach(i => {
-                msg += `- ${i.nombre} (x${i.qty})%0A`;
+                let optionsStr = "";
+                if (i.size && i.size !== 'N/A') optionsStr += ` Talle ${i.size}`;
+                if (i.color && i.color !== 'N/A') optionsStr += ` Color ${i.color}`;
+
+                msg += `- ${i.nombre}${optionsStr} (x${i.qty})%0A`;
                 total += (i.precio * i.qty);
             });
+
             if (typeof gtag === 'function') {
                 gtag('event', 'compra_whatsapp', {
                     'event_category': 'Ventas',
@@ -911,9 +1026,11 @@
             if (window.scrollY > 500) btn.classList.add('show'); else btn.classList.remove('show');
         };
         
-        // Cerrar modal con tecla ESC
         document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") closeZoom();
+            if (e.key === "Escape") {
+                closeZoomModal();
+                closeOptionsModal();
+            }
         });
     </script>
 </body>
