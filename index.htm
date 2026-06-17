@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Sublime Luna Roja | Diseño & Arte</title>
     
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e11d48'%3E%3Cpath d='M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-5.4-5.4 5.389 5.389 0 0 1 2.26-4.4C12.92 3.04 12.46 3 12 3z'/%3E%3C/svg%3E">
+    <link class="smooth-transition" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e11d48'%3E%3Cpath d='M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-5.4-5.4 5.389 5.389 0 0 1 2.26-4.4C12.92 3.04 12.46 3 12 3z'/%3E%3C/svg%3E">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -155,7 +155,7 @@
             pointer-events: none; 
         }
         
-        .card-content button { pointer-events: auto; }
+        .card-content button, .card-content select { pointer-events: auto; }
 
         .hidden-details {
             max-height: 0;
@@ -698,11 +698,28 @@
             clearTimeout(pressTimer);
         }
 
-        function openZoomDesktop(src, e) {
+        // CONTROLADOR UNIFICADO DE IMÁGENES (Fijo para móvil y PC)
+        function handleImageClick(src, id, e) {
             if (e) e.stopPropagation();
-            if (isLongPressing) return; // Se previene si ya abrimos con long press
-            if (window.innerWidth <= 768) return; // Clic corto no abre zoom en celulares
-            openZoomModal(src);
+            
+            // Si el temporizador de presión prolongada ya se activó, prevenimos duplicaciones
+            if (isLongPressing) {
+                isLongPressing = false;
+                return;
+            }
+
+            const cardWrapper = document.getElementById(`wrapper-${id}`);
+            if (!cardWrapper) return;
+            
+            const isActive = cardWrapper.classList.contains('active');
+            
+            if (!isActive) {
+                // Primer toque: Expandir la tarjeta para revelar detalles y botones de compra
+                toggleActive(cardWrapper);
+            } else {
+                // Segundo toque (ya expandido): Abrir la foto en pantalla completa de forma intuitiva
+                openZoomModal(src);
+            }
         }
 
         function openZoomModal(src) {
@@ -736,7 +753,7 @@
                     onmousedown="startLongPress('${currentImgSrc}', event)"
                     onmouseup="cancelLongPress()"
                     onmouseleave="cancelLongPress()"
-                    onclick="openZoomDesktop('${currentImgSrc}', event)"
+                    onclick="handleImageClick('${currentImgSrc}', ${p.id}, event)"
                 `;
 
                 return `
@@ -798,7 +815,7 @@
                 const src = p.imagenes[p.currentImgIndex];
                 imgElement.setAttribute('ontouchstart', `startLongPress('${src}', event)`);
                 imgElement.setAttribute('onmousedown', `startLongPress('${src}', event)`);
-                imgElement.setAttribute('onclick', `openZoomDesktop('${src}', event)`);
+                imgElement.setAttribute('onclick', `handleImageClick('${src}', ${p.id}, event)`);
             }
         }
         
@@ -898,7 +915,7 @@
         let currentModalProductId = null;
 
         function openOptionsModal(id, e) {
-            if (e) e.stopPropagation(); // Evitar que la tarjeta se cierre
+            if (e) e.stopPropagation(); // Evitar que la tarjeta se cierre o desactive
             currentModalProductId = id;
             
             // Restablecer los selects a su valor original
